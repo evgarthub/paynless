@@ -1,0 +1,11 @@
+{
+  "name": "paynless",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "pwsh run.ps1"
+  },
+  "author": "Yevhen Kifiak",
+  "license": "MIT"
+}

@@ -1,0 +1,37 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tariffs",
+  "info": {
+    "name": "tariff",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "source": {
+      "type": "string"
+    },
+    "startDate": {
+      "type": "date",
+      "required": true
+    },
+    "isAbsolute": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    },
+    "costs": {
+      "type": "component",
+      "repeatable": true,
+      "component": "main.cost",
+      "required": true
+    },
+    "type": {
+      "model": "type",
+      "via": "tariffs"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "collectionType",
+  "collectionName": "records",
+  "info": {
+    "name": "record",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "value": {
+      "type": "float",
+      "required": true
+    },
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "type": {
+      "via": "records",
+      "model": "type"
+    }
+  }
+}

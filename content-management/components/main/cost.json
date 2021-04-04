@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_main_costs",
+  "info": {
+    "name": "cost",
+    "icon": "dollar-sign"
+  },
+  "options": {},
+  "attributes": {
+    "limit": {
+      "type": "float",
+      "required": false
+    },
+    "cost": {
+      "type": "decimal",
+      "required": true
+    }
+  }
+}
