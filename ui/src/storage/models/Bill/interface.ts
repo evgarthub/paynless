@@ -46,6 +46,16 @@ export interface EditBillInput {
     type: string;
 }
 
+export interface CreateBillInput {
+    amount: number;
+    cost: number;
+    date: string;
+    month: number;
+    value: number;
+    year: number;
+    type: string;
+}
+
 export interface UpdateBillProps {
     id: string;
     record: EditBillInput;

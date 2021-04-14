@@ -6,8 +6,9 @@ import moment, { Moment } from 'moment';
 import { useCallback } from 'react';
 import { BillCreatorProps } from './BillCreator.props';
 import { Bill } from '../../storage/models/Bill';
+import { Payment } from '../Payment';
 
-export const BillCreator = ({ onClose }:BillCreatorProps) => {
+export const BillCreator = ({ onClose }: BillCreatorProps) => {
     const currentDate = moment();
     const [date, setDate] = useState<Moment>(currentDate);
     const [bills, setBills] = useState<Bill[]>();
@@ -34,8 +35,7 @@ export const BillCreator = ({ onClose }:BillCreatorProps) => {
                 <ListLayout gap={20}>
                     <DatePicker value={date} onChange={handleMonth} picker="month" format='MMMM' placeholder="Месяц оплаты" />
                     <Divider />
-                    {/* <RecordsToPay selectedIds={selectedTypesIds} onSelectedIdsChange={setSelectedTypesIds} tillDate={moment().month(month).endOf('month')} /> */}
-                    {/* <RecordsToPay onToggle={()} onSelectAll={} onDeselectAll={} selectedRecordsIds={} month={} year={} /> */}
+                    {/* <Payment month={} onCreate={} /> */}
                 </ListLayout>
             </Card>
             <ListLayout hAlignment='flex-end'>

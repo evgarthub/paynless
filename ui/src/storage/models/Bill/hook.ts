@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@apollo/client";
 import { useMemo } from "react";
-import { DeleteBillProps, EditBillInput, BillData, BillsData, UpdateBillProps, BillConnectionMonthData, BillsGroupedMonth } from "./interface";
+import { DeleteBillProps, EditBillInput, BillData, BillsData, UpdateBillProps, BillConnectionMonthData, BillsGroupedMonth, CreateBillInput } from "./interface";
 import { GET_BILLS_MONTH_GROUPED, CREATE_BILL, DELETE_BILL, GET_BILL, GET_BILLS, GET_BILLS_BY_TYPE_LIMIT, UPDATE_BILL } from "./query";
 
 export const useGetBills = () => {
@@ -52,8 +52,8 @@ export const useUpdateBill = () => {
 export const useDeleteBill = () => {
     const [ deleteBill ] = useMutation<DeleteBillProps>(DELETE_BILL);
 
-    const callback = (id: string) => {
-        deleteBill({ variables: { id } });
+    const callback = async (id: string) => {
+        await deleteBill({ variables: { id } });
     }
 
     return [ callback ];
@@ -62,8 +62,8 @@ export const useDeleteBill = () => {
 export const useCreateBill = () => {
     const [ createBill ] = useMutation(CREATE_BILL);
 
-    const callback = (bill: EditBillInput) => {
-        createBill({ variables: { bill } });
+    const callback = async (bill: CreateBillInput) => {
+        await createBill({ variables: { bill } });
     };
 
     return [ callback ];
