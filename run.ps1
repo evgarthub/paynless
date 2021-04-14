@@ -1,6 +1,8 @@
 
 Write-Host "Starting backend..."
-Start-Process powershell .\content-management\run.ps1
+Set-Location  .\content-management
+Start-Job -ScriptBlock { Start-Process yarn start }
 
 Write-Host "Starting frontend..."
-Start-Process powershell .\ui\run.ps1
+Set-Location ..\ui
+Start-Job -ScriptBlock { Start-Process yarn start }
