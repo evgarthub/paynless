@@ -1,0 +1,196 @@
+import {
+    Affix,
+    Button,
+    Group,
+    Kbd,
+    LoadingOverlay,
+    Modal,
+    NativeSelect,
+    NumberInput,
+    Stack,
+    useMantineTheme,
+} from '@mantine/core';
+import { DatePicker } from '@mantine/dates';
+import { useForm } from '@mantine/form';
+import { useHotkeys } from '@mantine/hooks';
+import { memo, useCallback, useMemo, useState } from 'react';
+import { Apps, Calendar, Numbers } from 'tabler-icons-react';
+import { NewRecord } from '../client/models';
+import { useCreateRecordMutation } from '../client/mutations/useCreateRecordMutation';
+import { useTypesQuery } from '../client/queries/useTypesQuery';
+import { globalLabel } from '../global/labels';
+import { AdvancedTooltip } from './AdvancedTooltip';
+import { TypeSelectItemProps } from './TypeSelect';
+
+export const CreateRecordModal = memo(() => {
+    const { colors, colorScheme } = useMantineTheme();
+    const [isOpened, setIsOpened] = useState(false);
+
+    const { mutateAsync, isLoading: isCreationLoading } =
+        useCreateRecordMutation();
+
+    const { data: types, isLoading: isTypesLoading } = useTypesQuery();
+
+    useHotkeys([
+        [
+            'mod+q',
+            (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                setIsOpened(true);
+            },
+        ],
+    ]);
+
+    const typesOptions = useMemo(() => {
+        if (types) {
+            return types.data.map<TypeSelectItemProps>((type) => ({
+                value: String(type.id),
+                label: type.attributes.label,
+                data: type,
+            }));
+        }
+
+        return [];
+    }, [types]);
+
+    const form = useForm<{
+        type: string;
+        date: Date;
+        value: number;
+    }>({
+        initialValues: {
+            type: `${typesOptions[0]?.data.id}`,
+            date: new Date(),
+            value: 0,
+        },
+
+        validate: {
+            value: (value) => (value >= 0 ? null : 'Value should be positive'),
+            type: (value) => (!!value ? null : 'Type is missing'),
+        },
+    });
+
+    const handleClose = useCallback(() => {
+        form.reset();
+        setIsOpened(false);
+    }, [form]);
+
+    const handleOpen = useCallback(() => setIsOpened(true), []);
+
+    const handleCreate = useCallback(async () => {
+        const record: NewRecord = {
+            data: {
+                value: form.values.value,
+                date: form.values.date,
+                type: {
+                    id: parseInt(form.values.type),
+                },
+            },
+        };
+
+        await mutateAsync({ record });
+        handleClose();
+    }, [
+        form.values.date,
+        form.values.type,
+        form.values.value,
+        handleClose,
+        mutateAsync,
+    ]);
+
+    return (
+        <>
+            <Affix position={{ bottom: 30, right: 30 }}>
+                <AdvancedTooltip
+                    tooltipContent={
+                        <>
+                            <Kbd>ctrl</Kbd> + <Kbd>Q</Kbd>
+                        </>
+                    }
+                >
+                    <Button
+                        radius='xl'
+                        size='xl'
+                        onClick={handleOpen}
+                        color='cyan'
+                    >
+                        Add
+                    </Button>
+                </AdvancedTooltip>
+            </Affix>
+            <Modal
+                title={globalLabel.createRecord.title}
+                closeOnClickOutside={false}
+                opened={isOpened}
+                onClose={handleClose}
+                overlayOpacity={0.55}
+                overlayBlur={3}
+                overlayColor={
+                    colorScheme === 'dark' ? colors.dark[9] : colors.gray[2]
+                }
+            >
+                <div style={{ position: 'relative' }}>
+                    <LoadingOverlay
+                        visible={isCreationLoading || isTypesLoading}
+                    />
+                    <Stack>
+                        <NumberInput
+                            label={globalLabel.createRecord.value}
+                            icon={<Numbers />}
+                            placeholder={
+                                globalLabel.createRecord.valuePlaceholder
+                            }
+                            radius='lg'
+                            size='md'
+                            {...form.getInputProps('value')}
+                        />
+                        <NativeSelect
+                            data={typesOptions}
+                            icon={<Apps />}
+                            radius='lg'
+                            size='md'
+                            label={globalLabel.createRecord.type}
+                            placeholder={
+                                globalLabel.createRecord.typePlaceholder
+                            }
+                            {...form.getInputProps('type')}
+                        />
+                        <DatePicker
+                            icon={<Calendar />}
+                            radius='lg'
+                            size='md'
+                            label={globalLabel.createRecord.date}
+                            placeholder={
+                                globalLabel.createRecord.datePlaceholder
+                            }
+                            clearable={false}
+                            {...form.getInputProps('date')}
+                        />
+                        <footer>
+                            <Group position='right'>
+                                <Button
+                                    radius='xl'
+                                    color='green'
+                                    onClick={handleCreate}
+                                >
+                                    {globalLabel.createRecord.create}
+                                </Button>
+                                <Button
+                                    radius='xl'
+                                    variant='light'
+                                    color='green'
+                                    onClick={handleClose}
+                                >
+                                    {globalLabel.createRecord.cancel}
+                                </Button>
+                            </Group>
+                        </footer>
+                    </Stack>
+                </div>
+            </Modal>
+        </>
+    );
+});
+
+CreateRecordModal.displayName = 'CreateRecordModal';

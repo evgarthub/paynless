@@ -1,0 +1,18 @@
+{
+    "Component": {
+        "scope": "typescript, typescriptreact",
+        "prefix": "cc",
+        "body": [
+            "import { memo } from 'react';",
+            "",
+            "export interface $TM_FILENAME_BASEProps {",
+            "    ${1}",
+            "}",
+            "",
+            "export const $TM_FILENAME_BASE = memo((props: $TM_FILENAME_BASEProps) => {",
+            "    ${2}",
+            "    return null;",
+            "});"
+        ]
+    }
+}

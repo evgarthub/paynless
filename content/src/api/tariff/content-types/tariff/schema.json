@@ -1,0 +1,44 @@
+{
+  "kind": "collectionType",
+  "collectionName": "tariffs",
+  "info": {
+    "singularName": "tariff",
+    "pluralName": "tariffs",
+    "displayName": "Tariff",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "startDate": {
+      "type": "date",
+      "required": true
+    },
+    "limit": {
+      "type": "float"
+    },
+    "source": {
+      "type": "string"
+    },
+    "type": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::type.type",
+      "inversedBy": "tariffs"
+    },
+    "cost": {
+      "type": "decimal"
+    },
+    "isAbsolute": {
+      "type": "boolean",
+      "default": false
+    },
+    "isEnabled": {
+      "type": "boolean",
+      "default": false,
+      "required": true
+    }
+  }
+}

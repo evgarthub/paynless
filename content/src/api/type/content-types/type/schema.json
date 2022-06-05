@@ -1,0 +1,49 @@
+{
+  "kind": "collectionType",
+  "collectionName": "types",
+  "info": {
+    "singularName": "type",
+    "pluralName": "types",
+    "displayName": "Type",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "color": {
+      "type": "enumeration",
+      "enum": [
+        "blue",
+        "red",
+        "yellow",
+        "purple",
+        "green",
+        "orange",
+        "grey"
+      ]
+    },
+    "tariffs": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::tariff.tariff",
+      "mappedBy": "type"
+    },
+    "records": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::record.record",
+      "mappedBy": "type"
+    },
+    "unit": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string"
+    }
+  }
+}

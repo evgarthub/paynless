@@ -1,3 +1,4 @@
-export * from './RecordsPage';
-export * from './HomePage';
-export * from './BillsPage';
+export * from './MainView';
+export * from './RecordsView';
+export * from './TariffsView';
+export * from './TypesView';

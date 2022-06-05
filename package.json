@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "pwsh run.ps1"
+    "start": "pwsh run.ps1",
+    "cme": "cd ./content && yarn start development",
+    "ui": "cd ./ui && npm start"
   },
   "author": "Yevhen Kifiak",
   "license": "MIT"
