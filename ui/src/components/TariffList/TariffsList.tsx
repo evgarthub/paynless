@@ -1,4 +1,4 @@
-import { Group, Paper, Title, Stack, Badge } from '@mantine/core';
+import { Group, Paper, Title, Stack, Badge, ScrollArea } from '@mantine/core';
 import { memo, useMemo } from 'react';
 import { Tariff } from '../../client/models/Tariff';
 import { Type } from '../../client/models/Type';
@@ -27,33 +27,35 @@ export const TariffsList = memo(({ tariffs, types }: TariffsListProps) => {
     }, [tariffs, types]);
 
     return (
-        <Stack spacing='md'>
-            {pairs.map((p) => (
-                <Paper
-                    p='md'
-                    radius='md'
-                    key={p.name}
-                    shadow='md'
-                    withBorder={true}
-                >
-                    <Group spacing='xs'>
-                        <Title order={4}>{p.title}</Title>
-                        <Badge color={p.color} radius='md' variant='filled'>
-                            {p.name}
-                        </Badge>
-                    </Group>
-                    <Stack spacing='xs'>
-                        {p.list.map((i) => (
-                            <TariffsListItem
-                                key={i.id}
-                                tariff={i}
-                                unit={p.unit}
-                            />
-                        ))}
-                    </Stack>
-                </Paper>
-            ))}
-        </Stack>
+        <ScrollArea>
+            <Stack spacing='sm' p='lg' pt='xs'>
+                {pairs.map((p) => (
+                    <Paper
+                        p='md'
+                        radius='md'
+                        key={p.name}
+                        shadow='md'
+                        withBorder={true}
+                    >
+                        <Group spacing='xs'>
+                            <Title order={4}>{p.title}</Title>
+                            <Badge color={p.color} radius='md' variant='filled'>
+                                {p.name}
+                            </Badge>
+                        </Group>
+                        <Stack spacing='xs'>
+                            {p.list.map((i) => (
+                                <TariffsListItem
+                                    key={i.id}
+                                    tariff={i}
+                                    unit={p.unit}
+                                />
+                            ))}
+                        </Stack>
+                    </Paper>
+                ))}
+            </Stack>
+        </ScrollArea>
     );
 });
 

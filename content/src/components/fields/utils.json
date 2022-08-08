@@ -1,0 +1,36 @@
+{
+  "collectionName": "components_fields_utils",
+  "info": {
+    "displayName": "utils",
+    "icon": "box",
+    "description": ""
+  },
+  "options": {},
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "from": {
+      "type": "float"
+    },
+    "to": {
+      "type": "float"
+    },
+    "value": {
+      "type": "float"
+    },
+    "cost": {
+      "type": "decimal"
+    },
+    "type": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::type.type"
+    },
+    "tariff": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::tariff.tariff"
+    }
+  }
+}

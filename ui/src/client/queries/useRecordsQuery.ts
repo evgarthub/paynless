@@ -1,4 +1,5 @@
 import { useQuery } from 'react-query';
+import { mapBaseAttributes } from '../models';
 import { RecordService } from '../services/RecordService';
 
 export const recordsQueryKey = 'records';
@@ -9,6 +10,7 @@ export const recordsQuery = async () => {
     // Convert string date field to Date type
     resp.data.data = resp.data.data.map((r) => {
         r.attributes.date = new Date(r.attributes.date);
+        mapBaseAttributes(r.attributes);
         return r;
     });
 

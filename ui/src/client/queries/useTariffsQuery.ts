@@ -1,4 +1,5 @@
 import { useQuery } from 'react-query';
+import { mapBaseAttributes } from '../models';
 import { TariffService } from '../services/TariffService';
 
 export const tariffsQueryKey = 'tariffs';
@@ -8,8 +9,7 @@ export const tariffsQuery = async () => {
 
     resp.data.data = resp.data.data.map((t) => {
         t.attributes.startDate = new Date(t.attributes.startDate);
-        t.attributes.createdAt = new Date(t.attributes.createdAt);
-        t.attributes.updatedAt = new Date(t.attributes.updatedAt);
+        mapBaseAttributes(t.attributes);
 
         return t;
     });

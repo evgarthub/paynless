@@ -12,8 +12,15 @@ import {
     ColorSwatch,
     CurrencyCent,
     DeviceHeartMonitor,
+    CurrencyDollar,
 } from 'tabler-icons-react';
-import { MainView, RecordsView, TypesView, TariffsView } from './views';
+import {
+    MainView,
+    RecordsView,
+    TypesView,
+    TariffsView,
+    BillsView,
+} from './views';
 import { ViewLink, Header } from './components';
 import { QueryClientProvider } from 'react-query';
 import { queryClient } from './client/queryClient';
@@ -65,6 +72,12 @@ export const App = memo(() => {
                                         icon={CurrencyCent}
                                         path='/tariffs'
                                     />
+                                    <ViewLink
+                                        label={globalLabel.billsView.title}
+                                        color='yellow'
+                                        icon={CurrencyDollar}
+                                        path='/bills'
+                                    />
                                 </Navbar.Section>
                                 <Divider my='sm' />
                                 <Navbar.Section mt='md'>
@@ -92,6 +105,10 @@ export const App = memo(() => {
                                     <Route
                                         path='/tariffs'
                                         element={<TariffsView />}
+                                    />
+                                    <Route
+                                        path='/bills'
+                                        element={<BillsView />}
                                     />
                                 </Routes>
                             </Box>

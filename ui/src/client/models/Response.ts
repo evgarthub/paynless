@@ -3,6 +3,11 @@ export interface BaseAttributes {
     updatedAt: Date;
 }
 
+export const mapBaseAttributes = <T extends BaseAttributes>(data: T) => {
+    data.createdAt = new Date(data.createdAt);
+    data.updatedAt = new Date(data.updatedAt);
+};
+
 export interface NewEntity<T> {
     attributes: T;
 }

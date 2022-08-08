@@ -23,6 +23,10 @@ export const globalLabel = {
             color: 'Колір',
         },
     },
+    billsView: {
+        title: 'Рахунки',
+        description: 'Сплачені рахунки за спожиті послуги',
+    },
     tariffsView: {
         title: 'Тарифи',
         description: 'Оновлення тарифів на комунальні послуги',

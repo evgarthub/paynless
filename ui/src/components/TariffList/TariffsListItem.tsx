@@ -25,6 +25,7 @@ export const TariffsListItem = memo(
                     >
                         <Switch
                             checked={tariff.attributes.isEnabled}
+                            readOnly={true}
                             size='md'
                             radius='lg'
                             color='green'
@@ -56,6 +57,7 @@ export const TariffsListItem = memo(
                     <Button
                         component='a'
                         href={tariff.attributes.source}
+                        target='_blank'
                         compact={true}
                         variant='subtle'
                         leftIcon={<ExternalLink size={14} />}

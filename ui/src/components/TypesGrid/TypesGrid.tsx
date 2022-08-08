@@ -18,6 +18,7 @@ export const TypesGrid = memo(({ types }: TypesGridProps) => {
         >
             {types.map((t) => (
                 <TypesGridItem
+                    key={t.attributes.name}
                     title={t.attributes.label}
                     name={t.attributes.name}
                     unit={t.attributes.unit}
