@@ -25,6 +25,8 @@ import { ViewLink, Header } from './components';
 import { QueryClientProvider } from 'react-query';
 import { queryClient } from './client/queryClient';
 import { globalLabel } from './global/labels';
+import { LoginPage } from './components/LoginPage';
+import { GoogleAuthCallback } from './views/GoogleAuthCallback';
 
 export const App = memo(() => {
     const [colorScheme, setColorScheme] = useState<ColorScheme>('light');
@@ -81,7 +83,7 @@ export const App = memo(() => {
                                 </Navbar.Section>
                                 <Divider my='sm' />
                                 <Navbar.Section mt='md'>
-                                    Will be user
+                                    <LoginPage />
                                 </Navbar.Section>
                             </Navbar>
 
@@ -94,6 +96,10 @@ export const App = memo(() => {
                             >
                                 <Routes>
                                     <Route path='/' element={<MainView />} />
+                                    <Route
+                                        path='/auth/google/callback'
+                                        element={<GoogleAuthCallback />}
+                                    />
                                     <Route
                                         path='/records'
                                         element={<RecordsView />}

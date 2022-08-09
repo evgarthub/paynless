@@ -17,7 +17,11 @@ export const BillsView = memo(() => {
                 </Title>
                 <Text color='gray'>{globalLabel.billsView.description}</Text>
             </Stack>
-            <BusyLoader isError={isError} isLoading={isLoading}>
+            <BusyLoader
+                isError={isError}
+                isLoading={isLoading}
+                isEmpty={data?.meta.pagination.total === 0}
+            >
                 {data?.data && <BillsList bills={data.data} />}
             </BusyLoader>
         </Stack>
