@@ -1,0 +1,32 @@
+{
+    "kind": "collectionType",
+    "collectionName": "bills",
+    "info": {
+        "singularName": "bill",
+        "pluralName": "bills",
+        "displayName": "Bill",
+        "description": ""
+    },
+    "options": {
+        "draftAndPublish": false
+    },
+    "pluginOptions": {},
+    "attributes": {
+        "payDate": {
+            "type": "date",
+            "required": true
+        },
+        "utils": {
+            "displayName": "utils",
+            "type": "component",
+            "repeatable": true,
+            "component": "fields.utils",
+            "min": 1,
+            "required": true
+        },
+        "total": {
+            "type": "decimal",
+            "required": true
+        }
+    }
+}

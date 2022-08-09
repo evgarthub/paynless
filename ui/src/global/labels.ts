@@ -26,6 +26,13 @@ export const globalLabel = {
     billsView: {
         title: 'Рахунки',
         description: 'Сплачені рахунки за спожиті послуги',
+        table: {
+            name: 'Послуга',
+            range: 'Показання',
+            value: 'Витрачено',
+            tariff: 'Тариф',
+            cost: 'Вартість',
+        },
     },
     tariffsView: {
         title: 'Тарифи',
