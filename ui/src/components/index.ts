@@ -11,3 +11,4 @@ export * from './TypeIcon';
 export * from './TypeSelect';
 export * from './TypesGrid';
 export * from './ViewLink';
+export * from './MainContentLayout';
