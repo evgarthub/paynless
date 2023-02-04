@@ -60,14 +60,18 @@ export const CreateRecordModal = memo(() => {
         value: number;
     }>({
         initialValues: {
-            type: `${typesOptions[0]?.data.id}`,
+            type: `${typesOptions[0]?.data.id || 0}`,
             date: new Date(),
             value: 0,
         },
 
         validate: {
-            value: (value) => (value >= 0 ? null : 'Value should be positive'),
-            type: (value) => (!!value ? null : 'Type is missing'),
+            value: (value: number) => {
+                if (value < 0) return 'Value should be positive';
+            },
+            type: (value: string) => {
+                if (!value) return 'Type is missing';
+            },
         },
     });
 
@@ -79,6 +83,8 @@ export const CreateRecordModal = memo(() => {
     const handleOpen = useCallback(() => setIsOpened(true), []);
 
     const handleCreate = useCallback(async () => {
+        const result = form.validate();
+
         const record: NewRecord = {
             data: {
                 value: form.values.value,
@@ -88,16 +94,13 @@ export const CreateRecordModal = memo(() => {
                 },
             },
         };
+        console.log(form.errors, result);
+
+        if (result.hasErrors) return;
 
         await mutateAsync({ record });
         handleClose();
-    }, [
-        form.values.date,
-        form.values.type,
-        form.values.value,
-        handleClose,
-        mutateAsync,
-    ]);
+    }, [form, handleClose, mutateAsync]);
 
     return (
         <>
@@ -143,6 +146,8 @@ export const CreateRecordModal = memo(() => {
                             }
                             radius='lg'
                             size='md'
+                            step={0.1}
+                            precision={3}
                             {...form.getInputProps('value')}
                         />
                         <NativeSelect

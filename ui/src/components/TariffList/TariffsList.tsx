@@ -43,15 +43,20 @@ export const TariffsList = memo(({ tariffs, types }: TariffsListProps) => {
                                 {p.name}
                             </Badge>
                         </Group>
-                        <Stack spacing='xs'>
-                            {p.list.map((i) => (
-                                <TariffsListItem
-                                    key={i.id}
-                                    tariff={i}
-                                    unit={p.unit}
-                                />
-                            ))}
-                        </Stack>
+
+                        {p.list.length ? (
+                            <Stack spacing='xs'>
+                                {p.list.map((i) => (
+                                    <TariffsListItem
+                                        key={i.id}
+                                        tariff={i}
+                                        unit={p.unit}
+                                    />
+                                ))}
+                            </Stack>
+                        ) : (
+                            <span>Пустий список</span>
+                        )}
                     </Paper>
                 ))}
             </Stack>

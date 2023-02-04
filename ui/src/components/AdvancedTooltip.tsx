@@ -18,20 +18,19 @@ export const AdvancedTooltip = memo(
                 opened={isOpened}
                 onClose={handleClose}
                 position='top'
-                placement='center'
-                spacing='sm'
+                arrowPosition='center'
                 withArrow={true}
                 trapFocus={false}
                 closeOnEscape={false}
                 transition='fade'
-                styles={{ body: { pointerEvents: 'none' } }}
-                target={
+                styles={{ arrow: { pointerEvents: 'none' } }}
+            >
+                <Popover.Target>
                     <div onMouseEnter={handleOpen} onMouseLeave={handleClose}>
                         {children}
                     </div>
-                }
-            >
-                {tooltipContent}
+                </Popover.Target>
+                <Popover.Dropdown>{tooltipContent}</Popover.Dropdown>
             </Popover>
         );
     }

@@ -31,7 +31,7 @@ export const ActionIconConfirm = memo(
         tooltip,
         onClick,
     }: ActionIconConfirmProps) => {
-        const [isOpened, toggleIsOpened] = useToggle(false, [true, false]);
+        const [isOpened, toggleIsOpened] = useToggle();
 
         const handleIconClick = useCallback(() => {
             toggleIsOpened();
@@ -46,12 +46,13 @@ export const ActionIconConfirm = memo(
             <Popover
                 opened={isOpened}
                 position={position}
-                placement='center'
+                arrowPosition='center'
                 withArrow={true}
                 transition='fade'
                 radius='lg'
                 onClose={toggleIsOpened}
-                target={
+            >
+                <Popover.Target>
                     <Tooltip
                         label={
                             !isOpened
@@ -63,19 +64,20 @@ export const ActionIconConfirm = memo(
                             {!isOpened ? <IconComponent /> : <X />}
                         </ActionIcon>
                     </Tooltip>
-                }
-            >
-                <Stack spacing='sm'>
-                    <Text>{confirmMessage}</Text>
-                    <Button
-                        size='sm'
-                        radius='lg'
-                        onClick={handleConfirm}
-                        color={color}
-                    >
-                        {globalLabel.actionIconConfirm.confirmButton}
-                    </Button>
-                </Stack>
+                </Popover.Target>
+                <Popover.Dropdown>
+                    <Stack spacing='sm'>
+                        <Text>{confirmMessage}</Text>
+                        <Button
+                            size='sm'
+                            radius='lg'
+                            onClick={handleConfirm}
+                            color={color}
+                        >
+                            {globalLabel.actionIconConfirm.confirmButton}
+                        </Button>
+                    </Stack>
+                </Popover.Dropdown>
             </Popover>
         );
     }
