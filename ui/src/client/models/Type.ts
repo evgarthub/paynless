@@ -1,12 +1,14 @@
-import { BaseAttributes, Entity } from './Response';
+import { BaseAttributes, Entity, ResponseItem } from './Response';
 
-export interface TypeData extends BaseAttributes {
+export interface NewTypeData {
     name: string;
     color: string;
     unit: string;
     label: string;
 }
 
+export interface TypeData extends BaseAttributes, NewTypeData {}
+
 export interface Type extends Entity<TypeData> {}
 
-export type NewType = Omit<Type, 'id'>;
+export interface NewType extends ResponseItem<NewTypeData> {}

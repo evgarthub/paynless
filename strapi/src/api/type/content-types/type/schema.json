@@ -13,19 +13,28 @@
   "pluginOptions": {},
   "attributes": {
     "name": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "color": {
       "type": "enumeration",
       "enum": [
-        "blue",
+        "dark",
+        "gray",
         "red",
-        "yellow",
-        "purple",
+        "pink",
+        "grape",
+        "violet",
+        "indigo",
+        "blue",
+        "cyan",
         "green",
+        "lime",
+        "yellow",
         "orange",
-        "grey"
-      ]
+        "teal"
+      ],
+      "required": true
     },
     "tariffs": {
       "type": "relation",
@@ -40,10 +49,12 @@
       "mappedBy": "type"
     },
     "unit": {
-      "type": "string"
+      "type": "string",
+      "required": true
     },
     "label": {
-      "type": "string"
+      "type": "string",
+      "required": true
     }
   }
 }

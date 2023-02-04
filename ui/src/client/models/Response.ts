@@ -16,6 +16,13 @@ export interface Entity<T> extends NewEntity<T> {
     id: number;
 }
 
+export interface StrapiError {
+    status: string;
+    name: string;
+    message: string;
+    details: string;
+}
+
 export interface ResponseList<T> {
     data: T[];
     meta: {
@@ -26,8 +33,10 @@ export interface ResponseList<T> {
             total: number;
         };
     };
+    error?: StrapiError;
 }
 
 export interface ResponseItem<T> {
     data: T;
+    error?: StrapiError;
 }

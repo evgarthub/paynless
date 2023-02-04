@@ -12,7 +12,9 @@
       "export const ${TM_FILENAME_BASE} = memo((props: ${TM_FILENAME_BASE}Props) => {",
       "    $2",
       "    return null;",
-      "});"
+      "});",
+      "",
+      "${TM_FILENAME_BASE}.displayName = '${TM_FILENAME_BASE}';"
     ]
   }
 }

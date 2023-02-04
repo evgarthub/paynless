@@ -2,6 +2,7 @@ import { memo } from 'react';
 import { ColorSwatch } from 'tabler-icons-react';
 import { useTypesQuery } from '../client/queries/useTypesQuery';
 import { MainContentLayout, TypesGrid } from '../components';
+import { CreateTypeModal } from '../components/CreateTypeModal/CreateTypeModal';
 import { globalLabel } from '../global/labels';
 
 export const TypesView = memo(() => {
@@ -16,6 +17,7 @@ export const TypesView = memo(() => {
             isLoading={isLoading}
         >
             {data?.data && <TypesGrid types={data.data} />}
+            <CreateTypeModal />
         </MainContentLayout>
     );
 });

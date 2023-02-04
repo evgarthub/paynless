@@ -36,3 +36,5 @@ export const MainContentLayout = memo(
         );
     }
 );
+
+MainContentLayout.displayName = 'MainContentLayout';
