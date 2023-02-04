@@ -24,6 +24,10 @@ export const globalLabel = {
             color: 'Колір',
         },
         create: 'Створити',
+        list: {
+            deleteConfirmMessage: 'Ви впевнені?',
+            deleteTooltip: 'Видалити запис',
+        },
     },
     billsView: {
         title: 'Рахунки',

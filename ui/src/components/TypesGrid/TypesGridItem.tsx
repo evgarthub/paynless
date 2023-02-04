@@ -5,19 +5,30 @@ import {
     SimpleGrid,
     Title,
     Text,
+    Group,
 } from '@mantine/core';
-import { memo } from 'react';
+import { memo, useCallback } from 'react';
+import { Trash } from 'tabler-icons-react';
+import { useDeleteTypeMutation } from '../../client/mutations/useDeleteTypeMutation';
 import { globalLabel } from '../../global/labels';
+import { ActionIconConfirm } from '../ActionIconConfirm';
 
 export interface TypesGridItemProps {
     color: MantineColor;
     title: string;
     name: string;
     unit: string;
+    id: number;
 }
 
 export const TypesGridItem = memo(
-    ({ color, title, name, unit }: TypesGridItemProps) => {
+    ({ color, title, name, unit, id }: TypesGridItemProps) => {
+        const { mutateAsync } = useDeleteTypeMutation();
+
+        const handleDelete = useCallback(async () => {
+            await mutateAsync({ typeId: id });
+        }, [id, mutateAsync]);
+
         return (
             <Paper
                 shadow='md'
@@ -26,9 +37,19 @@ export const TypesGridItem = memo(
                 withBorder={true}
                 sx={{ minWidth: 280 }}
             >
-                <Title order={3} mb='md'>
-                    {title}
-                </Title>
+                <Group position='apart' align='center' mb='md'>
+                    <Title order={3}>{title}</Title>
+                    <ActionIconConfirm
+                        color='red'
+                        confirmMessage={
+                            globalLabel.typesView.list.deleteConfirmMessage
+                        }
+                        icon={Trash}
+                        onClick={handleDelete}
+                        position='left'
+                        tooltip={globalLabel.typesView.list.deleteTooltip}
+                    />
+                </Group>
                 <SimpleGrid cols={2}>
                     <Text weight={500}>
                         {globalLabel.typesView.typeItem.name}

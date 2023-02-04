@@ -23,6 +23,7 @@ export const TypesGrid = memo(({ types }: TypesGridProps) => {
                     name={t.attributes.name}
                     unit={t.attributes.unit}
                     color={t.attributes.color}
+                    id={t.id}
                 />
             ))}
         </Box>
