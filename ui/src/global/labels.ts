@@ -13,6 +13,7 @@ export const globalLabel = {
             deleteConfirmMessage: 'Ви впевнені?',
             deleteTooltip: 'Видалити запис',
         },
+        create: 'Створити',
     },
     typesView: {
         title: 'Види послуг',
@@ -22,6 +23,7 @@ export const globalLabel = {
             name: 'Ідентифікатор',
             color: 'Колір',
         },
+        create: 'Створити',
     },
     billsView: {
         title: 'Рахунки',
@@ -57,6 +59,22 @@ export const globalLabel = {
         datePlaceholder: 'Оберiть дату',
         create: 'Додати',
         cancel: 'Скасувати',
+        apiErrorTitle: 'Ми не змогли створити запис',
+    },
+    createType: {
+        title: 'Додати послугу',
+        color: 'Колір',
+        colorPlaceholder: 'Оберіть один з кольорів',
+        label: 'Назва українською',
+        labelPlaceholder: 'Придумайте назву',
+        name: `Ім'я`,
+        namePlaceholder: `Унікальне ім'я латиницею`,
+        unit: 'Одиниця виміру',
+        unitPlaceholder: 'Введіть буквенне позначення виміру',
+        create: 'Додати',
+        cancel: 'Скасувати',
+        colorEmpty: 'Нічого не знайдено',
+        apiErrorTitle: 'Ми не змогли створити запис',
     },
     actionIconConfirm: {
         confirmButton: 'Так',

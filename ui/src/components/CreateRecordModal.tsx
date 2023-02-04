@@ -13,6 +13,7 @@ import {
 import { DatePicker } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { useHotkeys } from '@mantine/hooks';
+import { showResponseErrorNotification } from '../utils/showResponseErrorNotification';
 import { memo, useCallback, useMemo, useState } from 'react';
 import { Apps, Calendar, Numbers } from 'tabler-icons-react';
 import { NewRecord } from '../client/models';
@@ -94,11 +95,18 @@ export const CreateRecordModal = memo(() => {
                 },
             },
         };
-        console.log(form.errors, result);
 
         if (result.hasErrors) return;
 
-        await mutateAsync({ record });
+        try {
+            await mutateAsync({ record });
+        } catch (error: any) {
+            showResponseErrorNotification(
+                globalLabel.createRecord.apiErrorTitle,
+                error
+            );
+            return;
+        }
         handleClose();
     }, [form, handleClose, mutateAsync]);
 
@@ -118,7 +126,7 @@ export const CreateRecordModal = memo(() => {
                         onClick={handleOpen}
                         color='cyan'
                     >
-                        Add
+                        {globalLabel.recordsView.create}
                     </Button>
                 </AdvancedTooltip>
             </Affix>
