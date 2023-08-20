@@ -10,12 +10,6 @@
     "name": {
       "type": "string"
     },
-    "from": {
-      "type": "float"
-    },
-    "to": {
-      "type": "float"
-    },
     "value": {
       "type": "float"
     },
@@ -31,6 +25,16 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::tariff.tariff"
+    },
+    "recordFrom": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::record.record"
+    },
+    "recordTo": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::record.record"
     }
   }
 }
