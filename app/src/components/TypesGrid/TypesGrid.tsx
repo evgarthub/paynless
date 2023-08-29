@@ -1,10 +1,10 @@
 import { Box } from '@mantine/core';
 import { memo } from 'react';
-import { Type } from '../../client/models/Type';
+import { Type } from '@client/models';
 import { TypesGridItem } from './TypesGridItem';
 
 export interface TypesGridProps {
-    types: Type[];
+    types: ReadonlyArray<Type>;
 }
 
 export const TypesGrid = memo(({ types }: TypesGridProps) => {
@@ -18,11 +18,11 @@ export const TypesGrid = memo(({ types }: TypesGridProps) => {
         >
             {types.map((t) => (
                 <TypesGridItem
-                    key={t.attributes.name}
-                    title={t.attributes.label}
-                    name={t.attributes.name}
-                    unit={t.attributes.unit}
-                    color={t.attributes.color}
+                    key={t.name}
+                    title={t.label}
+                    name={t.name}
+                    unit={t.unit}
+                    color={t.color}
                     id={t.id}
                 />
             ))}

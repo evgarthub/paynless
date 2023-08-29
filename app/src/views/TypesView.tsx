@@ -16,7 +16,7 @@ export const TypesView = memo(() => {
             isError={isError}
             isLoading={isLoading}
         >
-            {data?.data && <TypesGrid types={data.data} />}
+            {data && <TypesGrid types={data} />}
             <CreateTypeModal />
         </MainContentLayout>
     );

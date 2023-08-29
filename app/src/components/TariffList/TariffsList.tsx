@@ -1,26 +1,32 @@
-import { Group, Paper, Title, Stack, Badge, ScrollArea } from '@mantine/core';
+import {
+    Group,
+    Paper,
+    Title,
+    Stack,
+    Badge,
+    ScrollArea,
+    Divider,
+} from '@mantine/core';
 import { memo, useMemo } from 'react';
 import { Tariff } from '../../client/models/Tariff';
 import { Type } from '../../client/models/Type';
 import { TariffsListItem } from './TariffsListItem';
 
 export interface TariffsListProps {
-    tariffs: Tariff[];
-    types: Type[];
+    tariffs: ReadonlyArray<Tariff>;
+    types: ReadonlyArray<Type>;
 }
 
 export const TariffsList = memo(({ tariffs, types }: TariffsListProps) => {
     const pairs = useMemo(() => {
         return types.map((type) => {
-            const _tariffs = tariffs.filter(
-                (t) => t.attributes.type.data.id === type.id
-            );
+            const _tariffs = tariffs.filter((t) => t.type?.id === type.id);
 
             return {
-                title: type.attributes.label,
-                name: type.attributes.name,
-                color: type.attributes.color,
-                unit: type.attributes.unit,
+                title: type.label,
+                name: type.name,
+                color: type.color,
+                unit: type.unit,
                 list: _tariffs,
             };
         });
@@ -43,19 +49,20 @@ export const TariffsList = memo(({ tariffs, types }: TariffsListProps) => {
                                 {p.name}
                             </Badge>
                         </Group>
+                        <Divider my='sm' />
 
                         {p.list.length ? (
                             <Stack spacing='xs'>
-                                {p.list.map((i) => (
+                                {p.list.map((t) => (
                                     <TariffsListItem
-                                        key={i.id}
-                                        tariff={i}
+                                        key={t.id}
+                                        tariff={t}
                                         unit={p.unit}
                                     />
                                 ))}
                             </Stack>
                         ) : (
-                            <span>Пустий список</span>
+                            <span>$Пустий список</span>
                         )}
                     </Paper>
                 ))}

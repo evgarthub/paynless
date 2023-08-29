@@ -12,7 +12,7 @@ import { TypeIcon } from './TypeIcon';
 
 export interface RecordsFilterProps {
     value: string;
-    records: Record[];
+    records: ReadonlyArray<Record>;
     onChange: (value: string) => void;
 }
 
@@ -32,21 +32,15 @@ export const RecordsFilter = memo(
             const availableTypesSet = new Set<string>();
 
             records.forEach((record) => {
-                const typeName = record.attributes.type.data.attributes.name;
+                const typeName = record.type.name;
                 if (!availableTypesSet.has(typeName)) {
                     availableTypesSet.add(typeName);
                     availableTypes.push({
                         label: (
                             <Group noWrap={true} spacing={5} align='center'>
-                                <TypeIcon
-                                    size={16}
-                                    type={record.attributes.type.data}
-                                />
+                                <TypeIcon size={16} type={record.type} />
                                 <Text lineClamp={1} size='sm'>
-                                    {
-                                        record.attributes.type.data.attributes
-                                            .label
-                                    }
+                                    {record.type.label}
                                 </Text>
                             </Group>
                         ),

@@ -10,8 +10,8 @@ export const TableHeader = memo(({ data }: TableHeaderProps) => {
 
     return (
         <tr>
-            {dataArrayed.map((r) => (
-                <th>{r}</th>
+            {dataArrayed.map((r, i) => (
+                <th key={i}>{r}</th>
             ))}
         </tr>
     );

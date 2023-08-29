@@ -16,9 +16,6 @@
             "type": "date",
             "required": true
         },
-        "limit": {
-            "type": "float"
-        },
         "source": {
             "type": "string"
         },
@@ -27,9 +24,6 @@
             "relation": "manyToOne",
             "target": "api::type.type",
             "inversedBy": "tariffs"
-        },
-        "cost": {
-            "type": "decimal"
         },
         "isAbsolute": {
             "type": "boolean",
@@ -45,6 +39,12 @@
             "required": true,
             "unique": true,
             "private": true
+        },
+        "limits": {
+            "displayName": "Limits",
+            "type": "component",
+            "repeatable": true,
+            "component": "fields.limits"
         }
     }
 }

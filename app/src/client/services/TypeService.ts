@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ResponseList } from '../models';
-import { NewType, Type } from '../models/Type';
+import { NewType, TypeEntity } from '../models/Type';
 import { baseUrl } from './base';
 
 class TypeService {
@@ -11,7 +11,7 @@ class TypeService {
     }
 
     public async get() {
-        return await axios.get<ResponseList<Type>>(`${this._baseUrl}/`);
+        return await axios.get<ResponseList<TypeEntity>>(`${this._baseUrl}/`);
     }
 
     public async delete(id: number) {
@@ -19,7 +19,7 @@ class TypeService {
     }
 
     public async create(record: NewType) {
-        return await axios.post<Type>(this._baseUrl, record);
+        return await axios.post<TypeEntity>(this._baseUrl, record);
     }
 }
 

@@ -13,7 +13,7 @@ export interface TableRowProps {
 export const TableRow = memo(({ data, keys }: TableRowProps) => (
     <tr>
         {keys.map((key) => (
-            <td>
+            <td key={key}>
                 <Text size='sm' color='gray'>
                     {data[key]}
                 </Text>

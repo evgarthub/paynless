@@ -14,8 +14,8 @@ export const BusyLoader = memo(
     ({ children, isLoading, isError, isEmpty }: BusyLoaderProps) => {
         if (isError) {
             return (
-                <Alert icon={<AlertCircle />} title='Bummer!' color='red'>
-                    Something terrible happened!
+                <Alert icon={<AlertCircle />} title='%Помилка' color='red'>
+                    %Сталося щось жахливе!
                 </Alert>
             );
         }

@@ -8,8 +8,8 @@ import {
 } from '@mantine/core';
 import { memo } from 'react';
 import { RecordsListItem } from './RecordsListItem';
-import { Record } from '../../client/models';
-import { globalLabel } from '../../global/labels';
+import { Record } from '@client/models';
+import { globalLabel } from '@global/labels';
 
 export interface RecordsListProps {
     records: Record[];
@@ -51,11 +51,11 @@ export const RecordsList = memo(({ records }: RecordsListProps) => {
                         <RecordsListItem
                             key={r.id}
                             id={r.id}
-                            type={r.attributes.type.data}
-                            label={r.attributes.type.data.attributes.label}
-                            value={r.attributes.value}
-                            date={new Date(r.attributes.date)}
-                            unit={r.attributes.type.data.attributes.unit}
+                            type={r.type}
+                            label={r.type.label}
+                            value={r.value}
+                            date={r.date}
+                            unit={r.type.unit}
                         />
                     ))}
                 </Stack>

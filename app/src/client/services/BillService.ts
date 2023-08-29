@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { ResponseList } from '../models';
-import { Bill, NewBill } from '../models/Bills';
+import { BillEntity, NewBill } from '../models/Bills';
 import { baseUrl } from './base';
+import { ResponseItem, ResponseList } from '@client/models';
 
 class BillService {
     private _baseUrl: string;
@@ -11,8 +11,8 @@ class BillService {
     }
 
     public async get() {
-        return await axios.get<ResponseList<Bill>>(
-            `${this._baseUrl}/?populate=utils&populate=utils.type&populate=utils.tariff&populate=utils.recordFrom&populate=utils.recordTo&sort[1]=payDate%3Adesc`
+        return await axios.get<ResponseList<BillEntity>>(
+            `${this._baseUrl}/?populate=utils&populate=utils.type&populate=utils.tariff&populate=utils.tariff.limits&populate=utils.recordFrom&populate=utils.recordTo&sort[1]=payDate%3Adesc`
         );
     }
 
@@ -21,7 +21,10 @@ class BillService {
     }
 
     public async create(record: NewBill) {
-        return await axios.post<Bill>(this._baseUrl, record);
+        return await axios.post<ResponseItem<BillEntity>>(
+            this._baseUrl,
+            record
+        );
     }
 }
 

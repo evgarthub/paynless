@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { NewRecord, Record, ResponseList } from '../models';
+import { NewRecord, RecordEntity, ResponseItem, ResponseList } from '../models';
 import { baseUrl } from './base';
 
 class RecordService {
@@ -9,15 +9,14 @@ class RecordService {
         this._baseUrl = `${baseUrl}/records`;
     }
 
-    public async get() {
-        return await axios.get<ResponseList<Record>>(
-            `${this._baseUrl}/?populate=type&sort[1]=date%3Adesc`
-        );
-    }
+    public async get(typeId?: number) {
+        let query = '?populate=type&sort[1]=date%3Adesc';
 
-    public async getByTypeId(typeId: number) {
-        return await axios.get<ResponseList<Record>>(
-            `${this._baseUrl}/?populate=type&sort[1]=date%3Adesc&filters[type][id][$eq]=${typeId}`
+        if (typeId) {
+            query += `&filters[type][id][$eq]=${typeId}`;
+        }
+        return await axios.get<ResponseList<RecordEntity>>(
+            `${this._baseUrl}/${query}`
         );
     }
 
@@ -26,7 +25,10 @@ class RecordService {
     }
 
     public async create(record: NewRecord) {
-        return await axios.post<Record>(this._baseUrl, record);
+        return await axios.post<ResponseItem<RecordEntity>>(
+            this._baseUrl,
+            record
+        );
     }
 }
 

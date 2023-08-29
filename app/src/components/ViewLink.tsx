@@ -18,7 +18,7 @@ export interface ViewLinkProps {
 
 export const ViewLink = memo(
     ({ icon: Icon, label, color, path }: ViewLinkProps) => {
-        let navigate = useNavigate();
+        const navigate = useNavigate();
 
         const handleNavigate = useCallback(() => {
             navigate(path);

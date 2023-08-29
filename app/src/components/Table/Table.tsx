@@ -18,8 +18,8 @@ export const Table = memo(
                     <TableHeader data={header} />
                 </thead>
                 <tbody>
-                    {rows.map((r) => (
-                        <TableRow data={r} keys={keys} />
+                    {rows.map((r, i) => (
+                        <TableRow key={i} data={r} keys={keys} />
                     ))}
                 </tbody>
             </MantineTable>

@@ -18,12 +18,10 @@ export const RecordsView = memo(() => {
 
     const filteredRecords = useMemo(
         () =>
-            data?.data.filter(
-                (record) =>
-                    filter === 'all' ||
-                    record.attributes.type.data.attributes.name === filter
+            data?.filter(
+                (record) => filter === 'all' || record.type?.name === filter
             ) || [],
-        [data?.data, filter]
+        [data, filter]
     );
 
     return (
@@ -37,7 +35,7 @@ export const RecordsView = memo(() => {
             <RecordsFilter
                 value={filter}
                 onChange={setFilter}
-                records={data?.data || []}
+                records={data || []}
             />
             <RecordsList records={filteredRecords} />
             <CreateRecordModal />

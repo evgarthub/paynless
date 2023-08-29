@@ -21,11 +21,11 @@ const SelectItem = forwardRef<HTMLDivElement, SelectItemProps>(
             <RecordsListItem
                 key={record.id}
                 id={record.id}
-                type={record.attributes.type.data}
-                label={record.attributes.type.data.attributes.label}
-                value={record.attributes.value}
-                date={record.attributes.date}
-                unit={record.attributes.type.data.attributes.unit}
+                type={record.type}
+                label={record.type.label}
+                value={record.value}
+                date={record.date}
+                unit={record.type.unit}
                 hideActions={true}
             />
         </div>
@@ -42,9 +42,9 @@ export const TypeSelect = memo(({ type, onChange }: TypeSelectProps) => {
 
     const data = useMemo<SelectItemProps[]>(
         () =>
-            recordsData?.data?.map((r) => ({
+            recordsData?.map((r) => ({
                 record: r,
-                label: `${r.attributes.value}`,
+                label: `${r.value}`,
                 value: `${r.id}`,
             })) || [],
         [recordsData]
@@ -52,10 +52,8 @@ export const TypeSelect = memo(({ type, onChange }: TypeSelectProps) => {
 
     const handleFilter = useCallback(
         (value: string, item: SelectItemProps) =>
-            item.record.attributes.value
-                .toString()
-                .includes(value.toLowerCase().trim()) ||
-            item.record.attributes.date
+            item.record.value.toString().includes(value.toLowerCase().trim()) ||
+            item.record.date
                 .toISOString()
                 .toLowerCase()
                 .includes(value.toLowerCase().trim()),
@@ -74,7 +72,7 @@ export const TypeSelect = memo(({ type, onChange }: TypeSelectProps) => {
             data={data}
             filter={handleFilter}
             itemComponent={SelectItem}
-            label='Choose employee of the month'
+            label='%Оберіть останнє показання лічильника'
             maxDropdownHeight={400}
             nothingFound='Nobody here'
             placeholder='Pick one'

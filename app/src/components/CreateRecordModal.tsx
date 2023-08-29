@@ -10,16 +10,16 @@ import {
     Stack,
     useMantineTheme,
 } from '@mantine/core';
-import { DatePicker, DatePickerInput } from '@mantine/dates';
+import { DatePickerInput } from '@mantine/dates';
 import { useForm } from '@mantine/form';
 import { useHotkeys } from '@mantine/hooks';
 import { showResponseErrorNotification } from '../utils/showResponseErrorNotification';
 import { memo, useCallback, useMemo, useState } from 'react';
 import { Apps, Calendar, Numbers } from 'tabler-icons-react';
-import { NewRecord } from '../client/models';
-import { useCreateRecordMutation } from '../client/mutations/useCreateRecordMutation';
-import { useTypesQuery } from '../client/queries/useTypesQuery';
-import { globalLabel } from '../global/labels';
+import { NewRecord } from '@client/models';
+import { useCreateRecordMutation } from '@client/mutations/useCreateRecordMutation';
+import { useTypesQuery } from '@client/queries/useTypesQuery';
+import { globalLabel } from '@global/labels';
 import { AdvancedTooltip } from './AdvancedTooltip';
 import { TypeSelectItemProps } from './TypeSelect';
 
@@ -51,9 +51,9 @@ export const CreateRecordModal = memo(() => {
 
     const typesOptions = useMemo(() => {
         if (types) {
-            return types.data.map<TypeSelectItemProps>((type) => ({
+            return types.map<TypeSelectItemProps>((type) => ({
                 value: String(type.id),
-                label: type.attributes.label,
+                label: type.label,
                 data: type,
             }));
         }
@@ -91,7 +91,7 @@ export const CreateRecordModal = memo(() => {
         const record: NewRecord = {
             data: {
                 value: form.values.value,
-                date: form.values.date,
+                date: form.values.date.toISOString(),
                 type: {
                     id: parseInt(form.values.type),
                 },

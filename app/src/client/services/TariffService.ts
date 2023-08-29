@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { ResponseList } from '../models';
-import { NewTariff, Tariff } from '../models/Tariff';
+import { NewTariff, TariffEntity } from '../models/Tariff';
 import { baseUrl } from './base';
 
 class TariffService {
@@ -11,8 +11,8 @@ class TariffService {
     }
 
     public async get() {
-        return await axios.get<ResponseList<Tariff>>(
-            `${this._baseUrl}/?populate=type&sort[1]=startDate%3Adesc`
+        return await axios.get<ResponseList<TariffEntity>>(
+            `${this._baseUrl}/?populate=type&populate=limits&sort[1]=startDate%3Adesc`
         );
     }
 
@@ -21,7 +21,7 @@ class TariffService {
     }
 
     public async create(tariff: NewTariff) {
-        return await axios.post<Tariff>(this._baseUrl, tariff);
+        return await axios.post<TariffEntity>(this._baseUrl, tariff);
     }
 }
 

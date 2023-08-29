@@ -12,7 +12,7 @@ export interface NewEntity<T> {
     attributes: T;
 }
 
-export interface Entity<T> extends NewEntity<T> {
+export interface BackendEntity<T> extends NewEntity<T> {
     id: number;
 }
 
@@ -39,4 +39,28 @@ export interface ResponseList<T> {
 export interface ResponseItem<T> {
     data: T;
     error?: StrapiError;
+}
+
+export class Entity {
+    private _id: number;
+    private _createdAt: Date;
+    private _updatedAt: Date;
+
+    constructor(backendEntity: BackendEntity<BaseAttributes>) {
+        this._id = backendEntity.id;
+        this._createdAt = new Date(backendEntity.attributes.createdAt);
+        this._updatedAt = new Date(backendEntity.attributes.updatedAt);
+    }
+
+    public get id(): number {
+        return this._id;
+    }
+
+    public get createdAt(): Date {
+        return this._createdAt;
+    }
+
+    public get updatedAt(): Date {
+        return this._updatedAt;
+    }
 }

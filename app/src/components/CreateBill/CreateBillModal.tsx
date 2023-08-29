@@ -1,7 +1,4 @@
 import {
-    Affix,
-    Button,
-    Kbd,
     LoadingOverlay,
     Modal,
     Stack,
@@ -9,112 +6,89 @@ import {
     useMantineTheme,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useDisclosure, useHotkeys } from '@mantine/hooks';
 import { memo, useCallback, useMemo } from 'react';
 import { useTypesQuery } from '@client/queries/useTypesQuery';
 import { globalLabel } from '@global/labels';
-import { AdvancedTooltip } from '../AdvancedTooltip';
 import { TypeSelectItemProps } from '../TypeSelect';
 import { useCreateBillMutation } from '@client/mutations/useCreateBillMutation';
 import { useStepperState } from './useStepperState';
 import { RecordsStep } from './RecordsStep/RecordsStep';
 import { ModalFooter } from './ModalFooter';
 import { TypesStep } from './TypesStep';
-import { Record } from '@client/models';
+import { Record, Type } from '@client/models';
+import { BillCard } from '@components/BillCard';
+import { ResultStep } from './ResultStep';
 
-const { steps, title, createButton } = globalLabel.createBill;
+const { steps, title } = globalLabel.createBill;
 
 interface FormState {
-    utils: number[];
+    types: number[];
     period: Date;
     records: {
         [type: number]: [Record, Record];
     };
 }
 
-export const CreateBillModal = memo(() => {
-    const { colors, colorScheme } = useMantineTheme();
-    const [isOpened, handleModal] = useDisclosure(false);
-    const { activeStep, setActiveStep, nextStep, previousStep } =
-        useStepperState();
+export interface CreateBillModalProps {
+    isOpened: boolean;
+    onOpen: () => void;
+    onClose: () => void;
+}
 
-    const { mutateAsync: createBillAsync, isLoading: isCreationLoading } =
-        useCreateBillMutation();
+export const CreateBillModal = memo(
+    ({ onClose, isOpened }: CreateBillModalProps) => {
+        const { colors, colorScheme } = useMantineTheme();
+        const { activeStep, setActiveStep, nextStep, previousStep } =
+            useStepperState();
 
-    const { data: typesData, isLoading: isTypesLoading } = useTypesQuery();
+        const { mutateAsync: createBillAsync, isLoading: isCreationLoading } =
+            useCreateBillMutation();
 
-    useHotkeys([
-        [
-            'mod+q',
-            (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                handleModal.open();
+        const { data: typesData, isLoading: isTypesLoading } = useTypesQuery();
+
+        const typesOptions = useMemo(() => {
+            if (typesData) {
+                return typesData.map<TypeSelectItemProps>((type) => ({
+                    value: String(type.id),
+                    label: type.label,
+                    data: type,
+                }));
+            }
+
+            return [];
+        }, [typesData]);
+
+        const form = useForm<FormState>({
+            initialValues: {
+                types: [],
+                period: new Date(),
+                records: [],
             },
-        ],
-    ]);
 
-    const typesOptions = useMemo(() => {
-        if (typesData) {
-            return typesData.data.map<TypeSelectItemProps>((type) => ({
-                value: String(type.id),
-                label: type.attributes.label,
-                data: type,
-            }));
-        }
-
-        return [];
-    }, [typesData]);
-
-    const form = useForm<FormState>({
-        initialValues: {
-            utils: [],
-            period: new Date(),
-        },
-
-        validate: {
-            utils: (value: number[]) => {
-                if (value.length === 0)
-                    return 'Add at least 1 utility to pay for';
+            validate: {
+                types: (value: number[]) => {
+                    if (value.length === 0)
+                        return 'Додайте як мінімум 1 послугу для оплати';
+                },
+                // Check valid date
             },
-            // Check valid date
-        },
-    });
+        });
 
-    const selectedTypes = useMemo(
-        () =>
-            typesData?.data.filter((t) =>
-                form.values.utils.find((id) => id == t.id)
-            ),
-        [form.values.utils, typesData?.data]
-    );
+        const selectedTypes = useMemo(
+            () =>
+                typesData?.filter((t) =>
+                    form.values.types.find((id) => id == t.id)
+                ),
+            [form.values.types, typesData]
+        );
 
-    const handleClose = useCallback(() => {
-        form.reset();
-        setActiveStep(0);
-        handleModal.close();
-    }, [form, handleModal, setActiveStep]);
+        const handleClose = useCallback(() => {
+            form.reset();
+            setActiveStep(0);
+            onClose();
+        }, [onClose, form, setActiveStep]);
 
-    return (
-        <>
-            <Affix position={{ bottom: 30, right: 30 }}>
-                <AdvancedTooltip
-                    tooltipContent={
-                        <>
-                            <Kbd>ctrl</Kbd> + <Kbd>Q</Kbd>
-                        </>
-                    }
-                >
-                    <Button
-                        radius='xl'
-                        size='xl'
-                        onClick={handleModal.open}
-                        color='cyan'
-                    >
-                        {createButton}
-                    </Button>
-                </AdvancedTooltip>
-            </Affix>
+        return (
             <Modal
                 title={title}
                 closeOnClickOutside={false}
@@ -152,13 +126,22 @@ export const CreateBillModal = memo(() => {
                                 {selectedTypes && (
                                     <RecordsStep
                                         types={selectedTypes}
-                                        onChange={form.getInputProps('')}
+                                        onChange={
+                                            form.getInputProps('records')
+                                                .onChange
+                                        }
                                     />
                                 )}
                             </Stepper.Step>
 
                             <Stepper.Step title={steps.confirmation.title}>
-                                Підтвердження
+                                {selectedTypes && (
+                                    <ResultStep
+                                        period={form.values.period}
+                                        types={selectedTypes}
+                                        records={form.values.records}
+                                    />
+                                )}
                             </Stepper.Step>
                         </Stepper>
 
@@ -171,15 +154,8 @@ export const CreateBillModal = memo(() => {
                     </Stack>
                 </div>
             </Modal>
-        </>
-    );
-});
+        );
+    }
+);
 
 CreateBillModal.displayName = 'CreateBillModal';
-
-const calculateTotal = (utils: any[]) => {
-    // let result = 0;
-
-    utils.forEach((u) => console.log(u));
-    console.log('Function not implemented.');
-};

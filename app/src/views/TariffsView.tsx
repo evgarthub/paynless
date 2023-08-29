@@ -25,11 +25,8 @@ export const TariffsView = memo(() => {
             isError={isTariffsError || isTypesError}
             isLoading={isTariffsLoading || isTypesLoading}
         >
-            {tariffsData?.data && typesData?.data && (
-                <TariffsList
-                    tariffs={tariffsData.data}
-                    types={typesData.data}
-                />
+            {typesData && tariffsData && (
+                <TariffsList tariffs={tariffsData} types={typesData} />
             )}
         </MainContentLayout>
     );

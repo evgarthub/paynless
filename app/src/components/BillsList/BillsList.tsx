@@ -1,7 +1,7 @@
 import { ScrollArea, Stack } from '@mantine/core';
 import { memo } from 'react';
-import { Bill } from '../../client/models/Bills';
-import { BillsListItem } from './BillsListItem';
+import { Bill } from '@client/models/Bills';
+import { BillCard } from '../BillCard';
 
 export interface BillsListProps {
     bills: Bill[];
@@ -12,9 +12,16 @@ export const BillsList = memo(({ bills }: BillsListProps) => {
         <ScrollArea>
             <Stack justify='flex-start' spacing='sm' p='lg' pt='xs'>
                 {bills.map((b) => (
-                    <BillsListItem key={b.id} bill={b} />
+                    <BillCard
+                        key={b.id}
+                        payDate={b.payDate}
+                        total={b.total}
+                        utils={b.utils}
+                    />
                 ))}
             </Stack>
         </ScrollArea>
     );
 });
+
+BillsList.displayName = 'BillsList';

@@ -43,7 +43,7 @@ export const RecordsListItem = memo(
         const matchesMaxMd = useMediaQuery(`(max-width: ${breakpoints.md}px)`);
         const matchesMinSm = useMediaQuery(`(min-width: ${breakpoints.sm}px)`);
 
-        const TypeIcon = getUtilityTypeIcon(type.attributes.name);
+        const TypeIcon = getUtilityTypeIcon(type.name);
 
         const handleDelete = useCallback(async () => {
             await mutateAsync({ recordId: id });
@@ -61,7 +61,7 @@ export const RecordsListItem = memo(
                 <Grid justify='space-between' align='center'>
                     <Grid.Col xs={12} sm={6} md={4}>
                         <Group>
-                            <Avatar color={type.attributes.color} radius='xl'>
+                            <Avatar color={type.color} radius='xl'>
                                 <TypeIcon />
                             </Avatar>
                             <Text weight={500}>{label}</Text>

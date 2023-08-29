@@ -18,11 +18,11 @@ export interface TypeSelectItemProps extends SelectItem {
 }
 
 const TypeSelectItem = memo(({ label, value, data }: TypeSelectItemProps) => {
-    const TypeIcon = getUtilityTypeIcon(data.attributes.name);
+    const TypeIcon = getUtilityTypeIcon(data.name);
 
     return (
         <Group noWrap={true}>
-            <Avatar color={data.attributes.color} radius='xl'>
+            <Avatar color={data.color} radius='xl'>
                 <TypeIcon />
             </Avatar>
             <Text weight={500}>{label}</Text>

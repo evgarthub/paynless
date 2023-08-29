@@ -4,7 +4,7 @@ import { useBillsQuery } from '../client/queries/useBillsQuery';
 import { MainContentLayout } from '../components';
 import { BillsList } from '../components/BillsList';
 import { globalLabel } from '../global/labels';
-import { CreateBillModal } from '../components/CreateBillModal/CreateBillModal';
+import { CreateBill } from '@components/CreateBill';
 
 export const BillsView = memo(() => {
     const { data, isError, isLoading } = useBillsQuery();
@@ -17,8 +17,8 @@ export const BillsView = memo(() => {
             isError={isError}
             isLoading={isLoading}
         >
-            {data?.data && <BillsList bills={data.data} />}
-            <CreateBillModal />
+            {data && <BillsList bills={data} />}
+            <CreateBill />
         </MainContentLayout>
     );
 });
