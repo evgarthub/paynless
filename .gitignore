@@ -1,2 +1,53 @@
-*/**/node_modules/
-strapi/
+# Dependencies
+node_modules/
+**/node_modules/
+bun.lock
+**/bun.lock
+
+# Build output
+dist/
+build/
+*.tsbuildinfo
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# SQLite
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Data volumes
+data/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Logs
+*.log
+npm-debug.log*
+bun-debug.log*
+
+# Bun
+.bunv
+
+# Vite
+web/dist/
+
+# Drizzle
+server/drizzle/meta/
+
+# Docker
+docker-compose.override.yml
