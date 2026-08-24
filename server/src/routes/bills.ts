@@ -53,24 +53,25 @@ app.post("/", async (c) => {
         isEstimated = true;
       }
 
-      consumption = currentReading - previousReading;
+      consumption = Math.round((currentReading - previousReading) * 10) / 10;
       totalCost = consumption * item.appliedRate;
     }
 
+    const roundedTotalCost = Math.round(totalCost * 100) / 100;
     const itemId = nanoid();
     items.push({
       id: itemId,
       billId,
       utilityId: utility.id,
       inputType: item.inputType,
-      previousReading,
-      currentReading,
-      consumption,
+      previousReading: Math.round(previousReading * 10) / 10,
+      currentReading: Math.round(currentReading * 10) / 10,
+      consumption: Math.round(consumption * 10) / 10,
       appliedRate: item.appliedRate,
-      totalCost: Math.round(totalCost * 100) / 100,
+      totalCost: roundedTotalCost,
       isEstimated,
     });
-    totalAmount += totalCost;
+    totalAmount += roundedTotalCost;
   }
 
   db.insert(bills)

@@ -161,6 +161,36 @@ Migrations are generated via `drizzle-kit generate` and applied with `bun run db
 
 ## Home Assistant Integration
 
+### Preparation
+
+Before enabling HA integration, complete these steps in Home Assistant:
+
+#### 1. Create a Long-Lived Access Token
+
+1. Open your HA profile page (click your user icon → **Profile**).
+2. Scroll to the **Long-Lived Access Tokens** section.
+3. Click **Create Token**, give it a name (e.g. `Paynless`), and copy the generated token.
+4. Set this as the `HA_TOKEN` environment variable.
+
+> Do not use a short-lived session token — the server runs as a background process and needs a persistent token.
+
+#### 2. Find Your Mobile App Notification Service
+
+The notify service name depends on your device. To find it:
+
+1. Go to **Developer Tools → Services** in HA.
+2. Search for `notify`.
+3. Look for your device's service — it will be something like `mobile_app` or `mobile_app_johns_phone`.
+4. Use the suffix (the part after `notify.`) as the `HA_NOTIFY_SERVICE` value.
+
+For example, if the full service is `notify.mobile_app`, set `HA_NOTIFY_SERVICE=mobile_app`.
+
+#### 3. Map Utilities to HA Entities
+
+When creating or editing a utility in Paynless, enter the HA entity ID (e.g. `sensor.water_meter`) in the **HA Entity** field. This tells Paynless which sensor to read when you select the "Home Assistant" input method for a bill.
+
+You can find entity IDs in **Developer Tools → States** or under **Settings → Devices & Services → Entities**.
+
 ### Sensor Reading
 
 When creating a bill with the **HA** input type, the server fetches the current state:

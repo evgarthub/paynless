@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { api } from "../../api/client";
 import type { TariffRate, Utility } from "../../types";
 
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export default function TariffForm({ tariff, utilities, onSaved, onCancel }: Props) {
+  const { t } = useTranslation();
   const [utilityId, setUtilityId] = useState(tariff?.utilityId ?? (utilities[0]?.id ?? ""));
   const [ratePerUnit, setRatePerUnit] = useState(tariff?.ratePerUnit?.toString() ?? "0");
   const [fixedFee, setFixedFee] = useState(tariff?.fixedFee?.toString() ?? "0");
@@ -45,10 +47,10 @@ export default function TariffForm({ tariff, utilities, onSaved, onCancel }: Pro
 
   return (
     <div className="bg-white rounded-lg shadow p-6 mb-6">
-      <h2 className="text-lg font-semibold mb-4">{tariff ? "Edit" : "New"} Tariff</h2>
+      <h2 className="text-lg font-semibold mb-4">{tariff ? t("tariffForm.editTariff") : t("tariffForm.newTariff")}</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Utility</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t("tariffForm.utility")}</label>
           <select
             value={utilityId}
             onChange={(e) => setUtilityId(e.target.value)}
@@ -60,7 +62,7 @@ export default function TariffForm({ tariff, utilities, onSaved, onCancel }: Pro
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Rate Per Unit</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t("tariffForm.ratePerUnit")}</label>
           <input
             type="number"
             step="0.0001"
@@ -70,7 +72,7 @@ export default function TariffForm({ tariff, utilities, onSaved, onCancel }: Pro
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Fixed Fee</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t("tariffForm.fixedFee")}</label>
           <input
             type="number"
             step="0.01"
@@ -80,7 +82,7 @@ export default function TariffForm({ tariff, utilities, onSaved, onCancel }: Pro
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Effective From</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t("tariffForm.effectiveFrom")}</label>
           <input
             type="date"
             value={effectiveFrom}
@@ -89,12 +91,12 @@ export default function TariffForm({ tariff, utilities, onSaved, onCancel }: Pro
           />
         </div>
         <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-1">Reference URL</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t("tariffForm.referenceUrl")}</label>
           <input
             type="url"
             value={referenceUrl}
             onChange={(e) => setReferenceUrl(e.target.value)}
-            placeholder="https://..."
+            placeholder={t("tariffForm.referencePlaceholder")}
             className="w-full border rounded-lg px-3 py-2 text-sm"
           />
         </div>
@@ -104,14 +106,14 @@ export default function TariffForm({ tariff, utilities, onSaved, onCancel }: Pro
             disabled={saving}
             className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
           >
-            {saving ? "Saving..." : "Save"}
+            {saving ? t("common.saving") : t("common.save")}
           </button>
           <button
             type="button"
             onClick={onCancel}
             className="border px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50"
           >
-            Cancel
+            {t("common.cancel")}
           </button>
         </div>
       </form>

@@ -72,4 +72,8 @@ export const api = {
     request<import("../types").EstimateResult>(
       `/readings/estimate/${utilityId}?previousReading=${previousReading}&billingPeriod=${billingPeriod}`
     ),
+  getPreviousReadings: (utilityId: string, limit = 3) =>
+    request<{ value: number; billingPeriod: string }[]>(
+      `/readings/previous/${utilityId}?limit=${limit}`
+    ),
 };

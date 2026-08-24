@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { api } from "../../api/client";
 import type { Utility } from "../../types";
 import UtilityForm from "./UtilityForm";
 
 export default function UtilitiesPage() {
+  const { t } = useTranslation();
   const [utilities, setUtilities] = useState<Utility[]>([]);
   const [editing, setEditing] = useState<Utility | null>(null);
   const [showForm, setShowForm] = useState(false);
@@ -12,7 +14,7 @@ export default function UtilitiesPage() {
   useEffect(() => { load(); }, []);
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Delete this utility?")) return;
+    if (!confirm(t("utilities.deleteConfirm"))) return;
     await api.deleteUtility(id);
     load();
   };
@@ -20,12 +22,12 @@ export default function UtilitiesPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Utilities</h1>
+        <h1 className="text-2xl font-bold">{t("utilities.title")}</h1>
         <button
           onClick={() => { setEditing(null); setShowForm(true); }}
           className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700"
         >
-          + Add Utility
+          {t("utilities.addUtility")}
         </button>
       </div>
 
@@ -41,11 +43,11 @@ export default function UtilitiesPage() {
         <table className="w-full text-sm">
           <thead className="bg-gray-50 text-left">
             <tr>
-              <th className="px-4 py-3 font-medium">Name</th>
-              <th className="px-4 py-3 font-medium">Type</th>
-              <th className="px-4 py-3 font-medium">Unit</th>
-              <th className="px-4 py-3 font-medium">HA Entity</th>
-              <th className="px-4 py-3 font-medium">Actions</th>
+              <th className="px-4 py-3 font-medium">{t("utilities.name")}</th>
+              <th className="px-4 py-3 font-medium">{t("utilities.type")}</th>
+              <th className="px-4 py-3 font-medium">{t("utilities.unit")}</th>
+              <th className="px-4 py-3 font-medium">{t("utilities.haEntity")}</th>
+              <th className="px-4 py-3 font-medium">{t("common.actions")}</th>
             </tr>
           </thead>
           <tbody className="divide-y">
@@ -59,20 +61,20 @@ export default function UtilitiesPage() {
                     {u.type}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-gray-500">{u.unit || "—"}</td>
-                <td className="px-4 py-3 text-gray-500 font-mono text-xs">{u.haEntityId || "—"}</td>
+                <td className="px-4 py-3 text-gray-500">{u.unit || t("common.noData")}</td>
+                <td className="px-4 py-3 text-gray-500 font-mono text-xs">{u.haEntityId || t("common.noData")}</td>
                 <td className="px-4 py-3">
                   <button
                     onClick={() => { setEditing(u); setShowForm(true); }}
                     className="text-indigo-600 hover:text-indigo-800 text-xs mr-3"
                   >
-                    Edit
+                    {t("common.edit")}
                   </button>
                   <button
                     onClick={() => handleDelete(u.id)}
                     className="text-red-600 hover:text-red-800 text-xs"
                   >
-                    Delete
+                    {t("common.delete")}
                   </button>
                 </td>
               </tr>
@@ -80,7 +82,7 @@ export default function UtilitiesPage() {
             {utilities.length === 0 && (
               <tr>
                 <td colSpan={5} className="px-4 py-8 text-center text-gray-400">
-                  No utilities yet. Add one to get started.
+                  {t("utilities.emptyState")}
                 </td>
               </tr>
             )}

@@ -1,16 +1,19 @@
 import { Routes, Route, Link, useLocation } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import UtilitiesPage from "./components/Utilities/UtilitiesPage";
 import TariffsPage from "./components/Tariffs/TariffsPage";
 import BillsPage from "./components/Bills/BillsPage";
-
-const nav = [
-  { to: "/", label: "Bills" },
-  { to: "/utilities", label: "Utilities" },
-  { to: "/tariffs", label: "Tariffs" },
-];
+import LanguageSwitcher from "./components/LanguageSwitcher";
 
 export default function App() {
   const location = useLocation();
+  const { t } = useTranslation();
+
+  const nav = [
+    { to: "/", label: t("nav.bills") },
+    { to: "/utilities", label: t("nav.utilities") },
+    { to: "/tariffs", label: t("nav.tariffs") },
+  ];
 
   return (
     <div className="min-h-screen">
@@ -30,6 +33,7 @@ export default function App() {
               {n.label}
             </Link>
           ))}
+          <LanguageSwitcher />
         </div>
       </nav>
       <main className="max-w-6xl mx-auto px-4 py-6">

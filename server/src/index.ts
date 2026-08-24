@@ -7,6 +7,7 @@ import tariffsRoutes from "./routes/tariffs";
 import billsRoutes from "./routes/bills";
 import readingsRoutes from "./routes/readings";
 import { startCronWorker } from "./services/cron";
+import { runMigrations } from "./db/migrate";
 
 const app = new Hono();
 
@@ -36,6 +37,7 @@ app.get("/api/swagger", (c) => {
 
 const PORT = parseInt(process.env.PORT || "3000", 10);
 
+runMigrations();
 startCronWorker();
 
 console.log(`Server running on port ${PORT}`);

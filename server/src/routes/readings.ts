@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { db } from "../db";
-import { utilities } from "../db/schema";
-import { eq } from "drizzle-orm";
+import { utilities, billItems, bills } from "../db/schema";
+import { eq, desc } from "drizzle-orm";
 import { fetchHAState } from "../services/ha";
 import { estimateReading } from "../services/estimation";
 
@@ -32,6 +32,32 @@ app.get("/estimate/:utilityId", async (c) => {
 
   const estimate = await estimateReading(utilityId, previousReading, billingPeriod);
   return c.json(estimate);
+});
+
+app.get("/previous/:utilityId", async (c) => {
+  const { utilityId } = c.req.param();
+  const limit = parseInt(c.req.query("limit") || "3", 10);
+
+  const items = db
+    .select({
+      currentReading: billItems.currentReading,
+      billingPeriod: bills.billingPeriod,
+    })
+    .from(billItems)
+    .innerJoin(bills, eq(billItems.billId, bills.id))
+    .where(eq(billItems.utilityId, utilityId))
+    .orderBy(desc(bills.billingPeriod))
+    .limit(limit)
+    .all();
+
+  const readings = items
+    .filter((item) => item.currentReading !== null)
+    .map((item) => ({
+      value: item.currentReading,
+      billingPeriod: item.billingPeriod,
+    }));
+
+  return c.json(readings);
 });
 
 export default app;

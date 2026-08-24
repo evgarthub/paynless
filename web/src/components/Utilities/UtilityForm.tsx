@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import { api } from "../../api/client";
 import type { Utility } from "../../types";
 
@@ -9,6 +10,7 @@ interface Props {
 }
 
 export default function UtilityForm({ utility, onSaved, onCancel }: Props) {
+  const { t } = useTranslation();
   const [name, setName] = useState(utility?.name ?? "");
   const [type, setType] = useState<"CONSUMPTION" | "FIXED">(utility?.type ?? "CONSUMPTION");
   const [unit, setUnit] = useState(utility?.unit ?? "");
@@ -38,10 +40,10 @@ export default function UtilityForm({ utility, onSaved, onCancel }: Props) {
 
   return (
     <div className="bg-white rounded-lg shadow p-6 mb-6">
-      <h2 className="text-lg font-semibold mb-4">{utility ? "Edit" : "New"} Utility</h2>
+      <h2 className="text-lg font-semibold mb-4">{utility ? t("utilityForm.editUtility") : t("utilityForm.newUtility")}</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t("utilityForm.name")}</label>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
@@ -50,31 +52,31 @@ export default function UtilityForm({ utility, onSaved, onCancel }: Props) {
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Type</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t("utilityForm.type")}</label>
           <select
             value={type}
             onChange={(e) => setType(e.target.value as "CONSUMPTION" | "FIXED")}
             className="w-full border rounded-lg px-3 py-2 text-sm"
           >
-            <option value="CONSUMPTION">Consumption</option>
-            <option value="FIXED">Fixed</option>
+            <option value="CONSUMPTION">{t("utilityForm.consumption")}</option>
+            <option value="FIXED">{t("utilityForm.fixed")}</option>
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Unit</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t("utilityForm.unit")}</label>
           <input
             value={unit}
             onChange={(e) => setUnit(e.target.value)}
-            placeholder="kWh, m³, etc."
+            placeholder={t("utilityForm.unitPlaceholder")}
             className="w-full border rounded-lg px-3 py-2 text-sm"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">HA Entity ID</label>
+          <label className="block text-sm font-medium text-gray-700 mb-1">{t("utilityForm.haEntityId")}</label>
           <input
             value={haEntityId}
             onChange={(e) => setHaEntityId(e.target.value)}
-            placeholder="sensor.electricity_meter"
+            placeholder={t("utilityForm.haEntityPlaceholder")}
             className="w-full border rounded-lg px-3 py-2 text-sm font-mono"
           />
         </div>
@@ -84,14 +86,14 @@ export default function UtilityForm({ utility, onSaved, onCancel }: Props) {
             disabled={saving}
             className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700 disabled:opacity-50"
           >
-            {saving ? "Saving..." : "Save"}
+            {saving ? t("common.saving") : t("common.save")}
           </button>
           <button
             type="button"
             onClick={onCancel}
             className="border px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50"
           >
-            Cancel
+            {t("common.cancel")}
           </button>
         </div>
       </form>

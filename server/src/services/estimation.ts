@@ -37,8 +37,8 @@ export async function estimateReading(
   const projectedReading = previousReading + dailyAvg * daysElapsed;
 
   return {
-    projectedReading: Math.round(projectedReading * 1000) / 1000,
-    dailyAvg: Math.round(dailyAvg * 1000) / 1000,
+    projectedReading: Math.round(projectedReading * 10) / 10,
+    dailyAvg: Math.round(dailyAvg * 10) / 10,
     daysElapsed,
   };
 }

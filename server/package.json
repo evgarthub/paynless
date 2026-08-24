@@ -6,7 +6,8 @@
     "build": "bun build src/index.ts --outdir dist --target bun",
     "start": "bun run dist/index.js",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "bun run src/db/migrate.ts"
+    "db:migrate": "bun run src/db/migrate.ts",
+    "db:migrate-old": "bun run src/db/migrate-old-data.ts"
   },
   "dependencies": {
     "hono": "^4.6.0",

@@ -1,9 +1,11 @@
 import { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { api } from "../../api/client";
 import type { TariffRate, Utility } from "../../types";
 import TariffForm from "./TariffForm";
 
 export default function TariffsPage() {
+  const { t } = useTranslation();
   const [tariffs, setTariffs] = useState<TariffRate[]>([]);
   const [utilities, setUtilities] = useState<Utility[]>([]);
   const [filter, setFilter] = useState<string>("");
@@ -19,7 +21,7 @@ export default function TariffsPage() {
   const utilityName = (id: string) => utilities.find((u) => u.id === id)?.name ?? id;
 
   const handleDelete = async (id: string) => {
-    if (!confirm("Delete this tariff?")) return;
+    if (!confirm(t("tariffs.deleteConfirm"))) return;
     await api.deleteTariff(id);
     load();
   };
@@ -27,12 +29,12 @@ export default function TariffsPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">Tariff Rates</h1>
+        <h1 className="text-2xl font-bold">{t("tariffs.title")}</h1>
         <button
           onClick={() => { setEditing(null); setShowForm(true); }}
           className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700"
         >
-          + Add Tariff
+          {t("tariffs.addTariff")}
         </button>
       </div>
 
@@ -42,7 +44,7 @@ export default function TariffsPage() {
           onChange={(e) => setFilter(e.target.value)}
           className="border rounded-lg px-3 py-2 text-sm"
         >
-          <option value="">All utilities</option>
+          <option value="">{t("tariffs.allUtilities")}</option>
           {utilities.map((u) => (
             <option key={u.id} value={u.id}>{u.name}</option>
           ))}
@@ -62,42 +64,42 @@ export default function TariffsPage() {
         <table className="w-full text-sm">
           <thead className="bg-gray-50 text-left">
             <tr>
-              <th className="px-4 py-3 font-medium">Utility</th>
-              <th className="px-4 py-3 font-medium">Rate/Unit</th>
-              <th className="px-4 py-3 font-medium">Fixed Fee</th>
-              <th className="px-4 py-3 font-medium">Effective From</th>
-              <th className="px-4 py-3 font-medium">Reference</th>
-              <th className="px-4 py-3 font-medium">Actions</th>
+              <th className="px-4 py-3 font-medium">{t("tariffs.utility")}</th>
+              <th className="px-4 py-3 font-medium">{t("tariffs.ratePerUnit")}</th>
+              <th className="px-4 py-3 font-medium">{t("tariffs.fixedFee")}</th>
+              <th className="px-4 py-3 font-medium">{t("tariffs.effectiveFrom")}</th>
+              <th className="px-4 py-3 font-medium">{t("tariffs.reference")}</th>
+              <th className="px-4 py-3 font-medium">{t("common.actions")}</th>
             </tr>
           </thead>
           <tbody className="divide-y">
-            {tariffs.map((t) => (
-              <tr key={t.id} className="hover:bg-gray-50">
-                <td className="px-4 py-3 font-medium">{utilityName(t.utilityId)}</td>
-                <td className="px-4 py-3">{t.ratePerUnit.toFixed(4)}</td>
-                <td className="px-4 py-3">{t.fixedFee.toFixed(2)}</td>
-                <td className="px-4 py-3">{new Date(t.effectiveFrom).toLocaleDateString()}</td>
+            {tariffs.map((tariff) => (
+              <tr key={tariff.id} className="hover:bg-gray-50">
+                <td className="px-4 py-3 font-medium">{utilityName(tariff.utilityId)}</td>
+                <td className="px-4 py-3">{tariff.ratePerUnit.toFixed(4)}</td>
+                <td className="px-4 py-3">{tariff.fixedFee.toFixed(2)}</td>
+                <td className="px-4 py-3">{new Date(tariff.effectiveFrom).toLocaleDateString()}</td>
                 <td className="px-4 py-3">
-                  {t.referenceUrl ? (
-                    <a href={t.referenceUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline text-xs">
-                      Link
+                  {tariff.referenceUrl ? (
+                    <a href={tariff.referenceUrl} target="_blank" rel="noopener noreferrer" className="text-indigo-600 hover:underline text-xs">
+                      {t("common.link")}
                     </a>
                   ) : (
-                    <span className="text-gray-400">—</span>
+                    <span className="text-gray-400">{t("common.noData")}</span>
                   )}
                 </td>
                 <td className="px-4 py-3">
                   <button
-                    onClick={() => { setEditing(t); setShowForm(true); }}
+                    onClick={() => { setEditing(tariff); setShowForm(true); }}
                     className="text-indigo-600 hover:text-indigo-800 text-xs mr-3"
                   >
-                    Edit
+                    {t("common.edit")}
                   </button>
                   <button
-                    onClick={() => handleDelete(t.id)}
+                    onClick={() => handleDelete(tariff.id)}
                     className="text-red-600 hover:text-red-800 text-xs"
                   >
-                    Delete
+                    {t("common.delete")}
                   </button>
                 </td>
               </tr>
@@ -105,7 +107,7 @@ export default function TariffsPage() {
             {tariffs.length === 0 && (
               <tr>
                 <td colSpan={6} className="px-4 py-8 text-center text-gray-400">
-                  No tariff rates yet.
+                  {t("tariffs.emptyState")}
                 </td>
               </tr>
             )}
