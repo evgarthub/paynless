@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import UtilitiesPage from "./components/Utilities/UtilitiesPage";
 import TariffsPage from "./components/Tariffs/TariffsPage";
 import BillsPage from "./components/Bills/BillsPage";
+import DashboardPage from "./components/Dashboard/DashboardPage";
 import LanguageSwitcher from "./components/LanguageSwitcher";
 
 export default function App() {
@@ -11,6 +12,7 @@ export default function App() {
 
   const nav = [
     { to: "/", label: t("nav.bills") },
+    { to: "/dashboard", label: t("nav.dashboard") },
     { to: "/utilities", label: t("nav.utilities") },
     { to: "/tariffs", label: t("nav.tariffs") },
   ];
@@ -39,6 +41,7 @@ export default function App() {
       <main className="max-w-6xl mx-auto px-4 py-6">
         <Routes>
           <Route path="/" element={<BillsPage />} />
+          <Route path="/dashboard" element={<DashboardPage />} />
           <Route path="/utilities" element={<UtilitiesPage />} />
           <Route path="/tariffs" element={<TariffsPage />} />
         </Routes>

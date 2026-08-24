@@ -1,17 +1,20 @@
 import { useState, useEffect, Fragment } from "react";
 import { useTranslation } from "react-i18next";
 import { api } from "../../api/client";
-import type { Bill, BillWithItems } from "../../types";
+import type { Bill, BillWithItems, Utility } from "../../types";
 import CreateBillModal from "./CreateBillModal";
 
 export default function BillsPage() {
   const { t } = useTranslation();
   const [bills, setBills] = useState<Bill[]>([]);
   const [expanded, setExpanded] = useState<BillWithItems[]>([]);
+  const [utilities, setUtilities] = useState<Utility[]>([]);
   const [showCreate, setShowCreate] = useState(false);
 
   const load = () => api.getBills().then(setBills);
-  useEffect(() => { load(); }, []);
+  useEffect(() => { load(); api.getUtilities().then(setUtilities); }, []);
+
+  const utilityName = (id: string) => utilities.find((u) => u.id === id)?.name ?? id;
 
   const toggleExpand = async (bill: Bill) => {
     const isExpanded = expanded.some((e) => e.id === bill.id);
@@ -81,7 +84,12 @@ export default function BillsPage() {
                     className={`hover:bg-gray-50 cursor-pointer ${isExpanded ? "bg-indigo-50" : ""}`}
                     onClick={() => toggleExpand(b)}
                   >
-                    <td className="px-4 py-3 font-medium">{b.billingPeriod}</td>
+                    <td
+                      className="px-4 py-3 font-medium"
+                      title={b.createdAt ? new Date(b.createdAt).toLocaleString() : undefined}
+                    >
+                      {b.billingPeriod}
+                    </td>
                     <td className="px-4 py-3">₴{b.totalAmount.toFixed(2)}</td>
                     <td className="px-4 py-3">
                       <span
@@ -139,7 +147,7 @@ export default function BillsPage() {
                           <tbody className="divide-y">
                             {expandedData.items.map((item) => (
                               <tr key={item.id}>
-                                <td className="py-2 font-medium">{item.utilityId}</td>
+                                <td className="py-2 font-medium">{utilityName(item.utilityId)}</td>
                                 <td className="py-2">
                                   <span className={`px-2 py-0.5 rounded text-xs ${
                                     item.inputType === "HA"

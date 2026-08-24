@@ -53,3 +53,45 @@ export interface EstimateResult {
   dailyAvg: number;
   daysElapsed: number;
 }
+
+export interface DashboardSummary {
+  totalSpentThisMonth: number;
+  totalSpentYTD: number;
+  unpaidTotal: number;
+  unpaidCount: number;
+  avgMonthlyCost: number;
+  billCount: number;
+  costTrend: number;
+}
+
+export interface SpendingByPeriodItem {
+  period: string;
+  total: number;
+  byUtility: { utilityId: string; name: string; amount: number }[];
+}
+
+export interface SpendingByUtilityItem {
+  utilityId: string;
+  name: string;
+  unit: string | null;
+  totalConsumption: number;
+  totalCost: number;
+}
+
+export interface ConsumptionTrendItem {
+  period: string;
+  consumption: number;
+  cost: number;
+  unit: string | null;
+}
+
+export interface SpendingByType {
+  consumption: number;
+  fixed: number;
+}
+
+export interface YearComparisonItem {
+  month: string;
+  monthIndex: number;
+  years: { year: number; consumption: number }[];
+}

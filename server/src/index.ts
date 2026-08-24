@@ -6,6 +6,7 @@ import utilitiesRoutes from "./routes/utilities";
 import tariffsRoutes from "./routes/tariffs";
 import billsRoutes from "./routes/bills";
 import readingsRoutes from "./routes/readings";
+import dashboardRoutes from "./routes/dashboard";
 import { startCronWorker } from "./services/cron";
 import { runMigrations } from "./db/migrate";
 
@@ -18,6 +19,7 @@ app.route("/api/utilities", utilitiesRoutes);
 app.route("/api/tariffs", tariffsRoutes);
 app.route("/api/bills", billsRoutes);
 app.route("/api/readings", readingsRoutes);
+app.route("/api/dashboard", dashboardRoutes);
 
 app.get("/api/health", (c) => c.json({ ok: true }));
 

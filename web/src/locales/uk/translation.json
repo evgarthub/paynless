@@ -1,6 +1,7 @@
 {
   "nav": {
     "bills": "Рахунки",
+    "dashboard": "Панель",
     "utilities": "Послуги",
     "tariffs": "Тарифи"
   },
@@ -102,5 +103,24 @@
     "effectiveFrom": "Діє з",
     "referenceUrl": "URL посилання",
     "referencePlaceholder": "https://..."
+  },
+  "dashboard": {
+    "title": "Панель",
+    "spentThisMonth": "Витрачено цього місяця",
+    "avgMonthly": "Середньомісячно",
+    "unpaid": "Не сплачено",
+    "trend": "Тренди",
+    "ytd": "З поку року: {{amount}}",
+    "billsCount": "{{count}} рахунків",
+    "unpaidCount": "{{count}} не сплачено",
+    "vsPreviousMonth": "порівняно з попереднім місяцем",
+    "monthlySpending": "Витрати по місяцях",
+    "consumptionTrend": "Тренди споживання",
+    "costBreakdown": "Вартість по послугах",
+    "yearComparison": "Порівняння по роках",
+    "range.month": "Місяць",
+    "range.quarter": "Квартал",
+    "range.year": "Рік",
+    "range.all": "Весь час"
   }
 }

@@ -76,4 +76,31 @@ export const api = {
     request<{ value: number; billingPeriod: string }[]>(
       `/readings/previous/${utilityId}?limit=${limit}`
     ),
+
+  // Dashboard
+  getDashboardSummary: (period?: string) => {
+    const q = period ? `?period=${period}` : "";
+    return request<import("../types").DashboardSummary>(`/dashboard/summary${q}`);
+  },
+  getDashboardSpending: (
+    from: string,
+    to: string,
+    groupBy: "period" | "utility" = "period"
+  ) =>
+    request<
+      import("../types").SpendingByPeriodItem[] &
+        import("../types").SpendingByUtilityItem[]
+    >(`/dashboard/spending?from=${from}&to=${to}&groupBy=${groupBy}`),
+  getConsumptionTrend: (utilityId: string, from: string, to: string) =>
+    request<import("../types").ConsumptionTrendItem[]>(
+      `/dashboard/consumption-trend?utilityId=${utilityId}&from=${from}&to=${to}`
+    ),
+  getSpendingByType: (from: string, to: string) =>
+    request<import("../types").SpendingByType>(
+      `/dashboard/spending-by-type?from=${from}&to=${to}`
+    ),
+  getYearComparison: (utilityId: string) =>
+    request<import("../types").YearComparisonItem[]>(
+      `/dashboard/year-comparison?utilityId=${utilityId}`
+    ),
 };

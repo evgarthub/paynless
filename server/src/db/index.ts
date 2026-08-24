@@ -7,5 +7,6 @@ const DB_PATH = process.env.DB_PATH || "./data/paynless.db";
 const sqlite = new Database(DB_PATH);
 sqlite.exec("PRAGMA journal_mode = WAL");
 sqlite.exec("PRAGMA foreign_keys = ON");
+sqlite.exec("PRAGMA wal_checkpoint(PASSIVE)");
 
 export const db = drizzle(sqlite, { schema });

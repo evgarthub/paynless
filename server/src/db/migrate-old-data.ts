@@ -337,6 +337,9 @@ for (const i of itemsWithNames) {
 }
 
 oldDb.close();
+
+// Flush WAL to main DB file so data persists across process restarts
+sqlite.exec("PRAGMA wal_checkpoint(TRUNCATE)");
 sqlite.close();
 
 console.log(`\nMigration complete. DB: ${DB_PATH}`);

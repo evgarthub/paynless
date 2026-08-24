@@ -1,6 +1,7 @@
 {
   "nav": {
     "bills": "Bills",
+    "dashboard": "Dashboard",
     "utilities": "Utilities",
     "tariffs": "Tariffs"
   },
@@ -102,5 +103,24 @@
     "effectiveFrom": "Effective From",
     "referenceUrl": "Reference URL",
     "referencePlaceholder": "https://..."
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "spentThisMonth": "Spent This Month",
+    "avgMonthly": "Avg Monthly",
+    "unpaid": "Unpaid",
+    "trend": "Trend",
+    "ytd": "YTD: {{amount}}",
+    "billsCount": "{{count}} bills",
+    "unpaidCount": "{{count}} unpaid",
+    "vsPreviousMonth": "vs previous month",
+    "monthlySpending": "Monthly Spending",
+    "consumptionTrend": "Consumption Trend",
+    "costBreakdown": "Cost by Utility",
+    "yearComparison": "Year-over-Year Comparison",
+    "range.month": "Month",
+    "range.quarter": "Quarter",
+    "range.year": "Year",
+    "range.all": "All"
   }
 }
