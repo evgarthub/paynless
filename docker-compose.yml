@@ -1,0 +1,15 @@
+services:
+  app:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./data:/app/data
+    environment:
+      - PORT=3000
+      - HA_URL=${HA_URL:-}
+      - HA_TOKEN=${HA_TOKEN:-}
+      - HA_NOTIFY_SERVICE=${HA_NOTIFY_SERVICE:-mobile_app}
+      - CRON_SCHEDULE=${CRON_SCHEDULE:-0 9 1 * *}
+      - DB_PATH=/app/data/paynless.db
+    restart: unless-stopped
