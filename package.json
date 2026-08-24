@@ -1,12 +1,15 @@
 {
   "name": "paynless",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "version": "2.0.0",
+  "description": "Utility Bills Tracker",
+  "private": true,
   "scripts": {
-    "start": "pwsh run.ps1",
-    "cme": "cd ./strapi && yarn start development",
-    "ui": "cd ./ui && npm start"
+    "dev": "concurrently \"bun run dev:server\" \"bun run dev:web\"",
+    "dev:server": "cd server && bun run dev",
+    "dev:web": "cd web && bun run dev",
+    "build": "cd server && bun run build && cd ../web && bun run build",
+    "db:generate": "cd server && bun run db:generate",
+    "db:migrate": "cd server && bun run db:migrate"
   },
   "author": "Yevhen Kifiak",
   "license": "MIT"
