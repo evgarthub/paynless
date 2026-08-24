@@ -2,6 +2,7 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { swaggerUI } from "@hono/swagger-ui";
+import { serveStatic } from "hono/bun";
 import utilitiesRoutes from "./routes/utilities";
 import tariffsRoutes from "./routes/tariffs";
 import billsRoutes from "./routes/bills";
@@ -36,6 +37,10 @@ app.get("/api/swagger", (c) => {
     },
   });
 });
+
+app.use("/assets/*", serveStatic({ root: "./public" }));
+app.use("/*", serveStatic({ root: "./public" }));
+app.get("/*", serveStatic({ path: "./public/index.html" }));
 
 const PORT = parseInt(process.env.PORT || "3000", 10);
 
