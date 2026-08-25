@@ -28,7 +28,7 @@ export default function CreateBillModal({ onSaved, onCancel }: Props) {
   const [utilities, setUtilities] = useState<Utility[]>([]);
   const [tariffs, setTariffs] = useState<TariffRate[]>([]);
   const [billingPeriod, setBillingPeriod] = useState(
-    new Date().toISOString().slice(0, 7)
+    new Date().toISOString().slice(0, 7),
   );
   const [lines, setLines] = useState<LineItemDraft[]>([]);
   const [saving, setSaving] = useState(false);
@@ -46,16 +46,18 @@ export default function CreateBillModal({ onSaved, onCancel }: Props) {
         u.map((util) => ({
           utilityId: util.id,
           included: true,
-          inputType: util.type === "FIXED" ? "MANUAL" as const : "MANUAL" as const,
+          inputType:
+            util.type === "FIXED" ? ("MANUAL" as const) : ("MANUAL" as const),
           previousReading: "",
           currentReading: "",
           appliedRate: "0",
           selectedTariffId: "custom" as const,
-        }))
+        })),
       );
 
       u.forEach((util) => {
-        api.getCurrentTariff(util.id)
+        api
+          .getCurrentTariff(util.id)
           .then((tariff) => {
             setLines((prevLines) =>
               prevLines.map((line) =>
@@ -65,8 +67,8 @@ export default function CreateBillModal({ onSaved, onCancel }: Props) {
                       appliedRate: tariff.ratePerUnit.toString(),
                       selectedTariffId: tariff.id,
                     }
-                  : line
-              )
+                  : line,
+              ),
             );
           })
           .catch(() => {});
@@ -81,8 +83,8 @@ export default function CreateBillModal({ onSaved, onCancel }: Props) {
                 prevLines.map((line) =>
                   line.utilityId === util.id
                     ? { ...line, previousReading: lastReading.value.toString() }
-                    : line
-                )
+                    : line,
+                ),
               );
             }
           });
@@ -93,7 +95,9 @@ export default function CreateBillModal({ onSaved, onCancel }: Props) {
   }, []);
 
   const updateLine = (idx: number, patch: Partial<LineItemDraft>) => {
-    setLines((prev) => prev.map((l, i) => (i === idx ? { ...l, ...patch } : l)));
+    setLines((prev) =>
+      prev.map((l, i) => (i === idx ? { ...l, ...patch } : l)),
+    );
 
     const line = lines[idx];
     if (line) {
@@ -141,7 +145,7 @@ export default function CreateBillModal({ onSaved, onCancel }: Props) {
       const est = await api.getEstimate(
         line.utilityId,
         parseFloat(line.previousReading || "0"),
-        billingPeriod
+        billingPeriod,
       );
       updateLine(idx, {
         currentReading: est.projectedReading.toString(),
@@ -177,11 +181,19 @@ export default function CreateBillModal({ onSaved, onCancel }: Props) {
           billId: "",
           utilityId: l.utilityId,
           inputType: l.inputType,
-          previousReading: l.previousReading ? parseFloat(l.previousReading) : null,
-          currentReading: l.currentReading ? parseFloat(l.currentReading) : null,
+          previousReading: l.previousReading
+            ? parseFloat(l.previousReading)
+            : null,
+          currentReading: l.currentReading
+            ? parseFloat(l.currentReading)
+            : null,
           consumption:
             l.previousReading && l.currentReading
-              ? Math.round((parseFloat(l.currentReading) - parseFloat(l.previousReading)) * 10) / 10
+              ? Math.round(
+                  (parseFloat(l.currentReading) -
+                    parseFloat(l.previousReading)) *
+                    10,
+                ) / 10
               : null,
           appliedRate: parseFloat(l.appliedRate),
           totalCost: 0,
@@ -201,7 +213,10 @@ export default function CreateBillModal({ onSaved, onCancel }: Props) {
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
             <h2 className="text-xl font-bold">{t("createBill.title")}</h2>
-            <button onClick={onCancel} className="text-gray-400 hover:text-gray-600">
+            <button
+              onClick={onCancel}
+              className="text-gray-400 hover:text-gray-600"
+            >
               ✕
             </button>
           </div>
@@ -234,7 +249,9 @@ export default function CreateBillModal({ onSaved, onCancel }: Props) {
                         <input
                           type="checkbox"
                           checked={line.included}
-                          onChange={(e) => updateLine(idx, { included: e.target.checked })}
+                          onChange={(e) =>
+                            updateLine(idx, { included: e.target.checked })
+                          }
                           className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
                         />
                         <span className="font-semibold">{util.name}</span>
@@ -250,19 +267,26 @@ export default function CreateBillModal({ onSaved, onCancel }: Props) {
                       </span>
                     </div>
 
-                    {line.included && (
-                      util.type === "FIXED" ? (
+                    {line.included &&
+                      (util.type === "FIXED" ? (
                         <div className="grid grid-cols-2 gap-3">
                           <div>
-                            <label className="block text-xs text-gray-500 mb-1">{t("createBill.fixedFee")}</label>
+                            <label className="block text-xs text-gray-500 mb-1">
+                              {t("createBill.fixedFee")}
+                            </label>
                             <select
                               value={line.selectedTariffId}
                               onChange={(e) => {
                                 const val = e.target.value;
                                 if (val === "custom") {
-                                  updateLine(idx, { selectedTariffId: "custom", appliedRate: "0" });
+                                  updateLine(idx, {
+                                    selectedTariffId: "custom",
+                                    appliedRate: "0",
+                                  });
                                 } else {
-                                  const tariff = tariffs.find((t) => t.id === val);
+                                  const tariff = tariffs.find(
+                                    (t) => t.id === val,
+                                  );
                                   if (tariff) {
                                     updateLine(idx, {
                                       selectedTariffId: tariff.id,
@@ -275,207 +299,291 @@ export default function CreateBillModal({ onSaved, onCancel }: Props) {
                             >
                               {tariffs
                                 .filter((t) => t.utilityId === line.utilityId)
-                                .sort((a, b) => new Date(b.effectiveFrom).getTime() - new Date(a.effectiveFrom).getTime())
+                                .sort(
+                                  (a, b) =>
+                                    new Date(b.effectiveFrom).getTime() -
+                                    new Date(a.effectiveFrom).getTime(),
+                                )
                                 .map((t) => (
                                   <option key={t.id} value={t.id}>
-                                    ₴{t.fixedFee.toFixed(2)} (from {new Date(t.effectiveFrom).toLocaleDateString()})
+                                    ₴{t.fixedFee.toFixed(2)} (from{" "}
+                                    {new Date(
+                                      t.effectiveFrom,
+                                    ).toLocaleDateString()}
+                                    )
                                   </option>
                                 ))}
-                              <option value="custom">{t("createBill.customAmount")}</option>
+                              <option value="custom">
+                                {t("createBill.customAmount")}
+                              </option>
                             </select>
                             {line.selectedTariffId === "custom" && (
                               <input
                                 type="number"
                                 step="0.01"
                                 value={line.appliedRate}
-                                onChange={(e) => updateLine(idx, { appliedRate: e.target.value })}
+                                onChange={(e) =>
+                                  updateLine(idx, {
+                                    appliedRate: e.target.value,
+                                  })
+                                }
                                 className="w-full border rounded px-3 py-1.5 text-sm"
                               />
                             )}
                           </div>
                         </div>
                       ) : (
-                      <>
-                        <div className="flex gap-2 mb-3">
-                          <button
-                            type="button"
-                            onClick={() => updateLine(idx, { inputType: "MANUAL" })}
-                            className={`px-3 py-1.5 rounded text-xs font-medium ${
-                              line.inputType === "MANUAL"
-                                ? "bg-gray-800 text-white"
-                                : "bg-gray-100 text-gray-600 hover:bg-gray-200"
-                            }`}
-                          >
-                            {t("createBill.manual")}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => {
-                              updateLine(idx, { inputType: "HA" });
-                              loadHAImpReading(idx);
-                            }}
-                            disabled={!util.haEntityId}
-                            className={`px-3 py-1.5 rounded text-xs font-medium ${
-                              line.inputType === "HA"
-                                ? "bg-purple-600 text-white"
-                                : "bg-purple-50 text-purple-600 hover:bg-purple-100 disabled:opacity-40"
-                            }`}
-                          >
-                            {t("createBill.homeAssistant")}
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => loadEstimate(idx)}
-                            className={`px-3 py-1.5 rounded text-xs font-medium ${
-                              line.inputType === "ESTIMATED"
-                                ? "bg-orange-500 text-white"
-                                : "bg-orange-50 text-orange-600 hover:bg-orange-100"
-                            }`}
-                          >
-                            {t("createBill.estimate")}
-                          </button>
-                        </div>
+                        <>
+                          <div className="flex gap-2 mb-3">
+                            <button
+                              type="button"
+                              onClick={() =>
+                                updateLine(idx, { inputType: "MANUAL" })
+                              }
+                              className={`px-3 py-1.5 rounded text-xs font-medium ${
+                                line.inputType === "MANUAL"
+                                  ? "bg-gray-800 text-white"
+                                  : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+                              }`}
+                            >
+                              {t("createBill.manual")}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => {
+                                updateLine(idx, { inputType: "HA" });
+                                loadHAImpReading(idx);
+                              }}
+                              disabled={!util.haEntityId}
+                              className={`px-3 py-1.5 rounded text-xs font-medium ${
+                                line.inputType === "HA"
+                                  ? "bg-purple-600 text-white"
+                                  : "bg-purple-50 text-purple-600 hover:bg-purple-100 disabled:opacity-40"
+                              }`}
+                            >
+                              {t("createBill.homeAssistant")}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => loadEstimate(idx)}
+                              className={`px-3 py-1.5 rounded text-xs font-medium ${
+                                line.inputType === "ESTIMATED"
+                                  ? "bg-orange-500 text-white"
+                                  : "bg-orange-50 text-orange-600 hover:bg-orange-100"
+                              }`}
+                            >
+                              {t("createBill.estimate")}
+                            </button>
+                          </div>
 
-                        <div className="grid grid-cols-2 gap-3">
-                          <div>
-                            <label className="block text-xs text-gray-500 mb-1">{t("createBill.previousReading")}</label>
-                            <div className="flex gap-1">
+                          <div className="grid grid-cols-2 gap-3">
+                            <div>
+                              <label className="block text-xs text-gray-500 mb-1">
+                                {t("createBill.previousReading")}
+                              </label>
+                              <div className="flex gap-1">
+                                <input
+                                  type="number"
+                                  step="0.1"
+                                  value={line.previousReading}
+                                  onChange={(e) =>
+                                    updateLine(idx, {
+                                      previousReading: e.target.value,
+                                    })
+                                  }
+                                  className="w-full border rounded px-3 py-1.5 text-sm"
+                                />
+                                {previousReadings[line.utilityId]?.length ? (
+                                  <select
+                                    value={line.previousReading}
+                                    onChange={(e) =>
+                                      updateLine(idx, {
+                                        previousReading: e.target.value,
+                                      })
+                                    }
+                                    className="border rounded px-2 py-1.5 text-xs text-gray-600 bg-gray-50 min-w-[140px]"
+                                  >
+                                    {previousReadings[line.utilityId].map(
+                                      (r) => (
+                                        <option
+                                          key={r.billingPeriod}
+                                          value={r.value}
+                                        >
+                                          {r.value} ({r.billingPeriod})
+                                        </option>
+                                      ),
+                                    )}
+                                  </select>
+                                ) : null}
+                              </div>
+                            </div>
+                            <div>
+                              <label className="block text-xs text-gray-500 mb-1">
+                                {t("createBill.currentReading")}
+                              </label>
                               <input
                                 type="number"
                                 step="0.1"
-                                value={line.previousReading}
-                                onChange={(e) => updateLine(idx, { previousReading: e.target.value })}
-                                className="w-full border rounded px-3 py-1.5 text-sm"
-                              />
-                              {previousReadings[line.utilityId]?.length ? (
-                                <select
-                                  value={line.previousReading}
-                                  onChange={(e) => updateLine(idx, { previousReading: e.target.value })}
-                                  className="border rounded px-2 py-1.5 text-xs text-gray-600 bg-gray-50 min-w-[140px]"
-                                >
-                                  {previousReadings[line.utilityId].map((r) => (
-                                    <option key={r.billingPeriod} value={r.value}>
-                                      {r.value} ({r.billingPeriod})
-                                    </option>
-                                  ))}
-                                </select>
-                              ) : null}
-                            </div>
-                          </div>
-                          <div>
-                            <label className="block text-xs text-gray-500 mb-1">{t("createBill.currentReading")}</label>
-                            <input
-                              type="number"
-                              step="0.1"
-                              value={line.currentReading}
-                              onChange={(e) => {
-                                updateLine(idx, { currentReading: e.target.value });
-                                const prev = parseFloat(line.previousReading || "0");
-                                const curr = parseFloat(e.target.value || "0");
-                                if (e.target.value && line.previousReading && curr < prev) {
-                                  setValidationErrors((prev) => ({
-                                    ...prev,
-                                    [`${line.utilityId}-current`]: t("createBill.validationError"),
-                                  }));
-                                } else {
-                                  setValidationErrors((prev) => {
-                                    const next = { ...prev };
-                                    delete next[`${line.utilityId}-current`];
-                                    return next;
+                                value={line.currentReading}
+                                onChange={(e) => {
+                                  updateLine(idx, {
+                                    currentReading: e.target.value,
                                   });
-                                }
-                              }}
-                              disabled={line.inputType === "HA"}
-                              className={`w-full border rounded px-3 py-1.5 text-sm disabled:bg-gray-50 ${
-                                validationErrors[`${line.utilityId}-current`]
-                                  ? "border-red-500 bg-red-50"
-                                  : ""
-                              }`}
-                            />
-                            {validationErrors[`${line.utilityId}-current`] && (
-                              <p className="text-xs text-red-600 mt-1">
-                                {validationErrors[`${line.utilityId}-current`]}
-                              </p>
-                            )}
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-3 gap-3 mt-3">
-                          <div>
-                            <label className="block text-xs text-gray-500 mb-1">{t("createBill.consumption", { unit: util.unit || "unit" })}</label>
-                            <div className="px-3 py-1.5 text-sm bg-gray-50 rounded border">
-                              {(
-                                (parseFloat(line.currentReading || "0") -
-                                  parseFloat(line.previousReading || "0"))
-                              ).toFixed(1)} {util.unit || "unit"}
-                            </div>
-                          </div>
-                          <div>
-                            <label className="block text-xs text-gray-500 mb-1">{t("createBill.ratePerUnit", { unit: util.unit || "unit" })}</label>
-                            <select
-                              value={line.selectedTariffId}
-                              onChange={(e) => {
-                                const val = e.target.value;
-                                if (val === "custom") {
-                                  updateLine(idx, { selectedTariffId: "custom", appliedRate: "0" });
-                                } else {
-                                  const tariff = tariffs.find((t) => t.id === val);
-                                  if (tariff) {
-                                    updateLine(idx, {
-                                      selectedTariffId: tariff.id,
-                                      appliedRate: tariff.ratePerUnit.toString(),
+                                  const prev = parseFloat(
+                                    line.previousReading || "0",
+                                  );
+                                  const curr = parseFloat(
+                                    e.target.value || "0",
+                                  );
+                                  if (
+                                    e.target.value &&
+                                    line.previousReading &&
+                                    curr < prev
+                                  ) {
+                                    setValidationErrors((prev) => ({
+                                      ...prev,
+                                      [`${line.utilityId}-current`]: t(
+                                        "createBill.validationError",
+                                      ),
+                                    }));
+                                  } else {
+                                    setValidationErrors((prev) => {
+                                      const next = { ...prev };
+                                      delete next[`${line.utilityId}-current`];
+                                      return next;
                                     });
                                   }
-                                }
-                              }}
-                              className="w-full border rounded px-2 py-1.5 text-xs text-gray-600 bg-gray-50 mb-1"
-                            >
-                              {tariffs
-                                .filter((t) => t.utilityId === line.utilityId)
-                                .sort((a, b) => new Date(b.effectiveFrom).getTime() - new Date(a.effectiveFrom).getTime())
-                                .map((t) => (
-                                  <option key={t.id} value={t.id}>
-                                    ₴{t.ratePerUnit.toFixed(4)} (from {new Date(t.effectiveFrom).toLocaleDateString()})
-                                  </option>
-                                ))}
-                              <option value="custom">{t("createBill.customRate")}</option>
-                            </select>
-                            {line.selectedTariffId === "custom" && (
-                              <input
-                                type="number"
-                                step="0.0001"
-                                value={line.appliedRate}
-                                onChange={(e) => updateLine(idx, { appliedRate: e.target.value })}
-                                className="w-full border rounded px-3 py-1.5 text-sm"
+                                }}
+                                disabled={line.inputType === "HA"}
+                                className={`w-full border rounded px-3 py-1.5 text-sm disabled:bg-gray-50 ${
+                                  validationErrors[`${line.utilityId}-current`]
+                                    ? "border-red-500 bg-red-50"
+                                    : ""
+                                }`}
                               />
-                            )}
-                          </div>
-                          <div>
-                            <label className="block text-xs text-gray-500 mb-1">{t("createBill.cost")}</label>
-                            <div className="px-3 py-1.5 text-sm bg-gray-50 rounded border">
-                              ₴
-                              {(
-                                (parseFloat(line.currentReading || "0") -
-                                  parseFloat(line.previousReading || "0")) *
-                                parseFloat(line.appliedRate || "0")
-                              ).toFixed(2)}
+                              {validationErrors[
+                                `${line.utilityId}-current`
+                              ] && (
+                                <p className="text-xs text-red-600 mt-1">
+                                  {
+                                    validationErrors[
+                                      `${line.utilityId}-current`
+                                    ]
+                                  }
+                                </p>
+                              )}
                             </div>
                           </div>
-                        </div>
 
-                        {line.inputType === "HA" && util.haEntityId && (
-                          <div className="mt-2 text-xs text-purple-600">
-                            {t("createBill.fetchingFrom")} <code>{util.haEntityId}</code>
+                          <div className="grid grid-cols-3 gap-3 mt-3">
+                            <div>
+                              <label className="block text-xs text-gray-500 mb-1">
+                                {t("createBill.consumption", {
+                                  unit: util.unit || "unit",
+                                })}
+                              </label>
+                              <div className="px-3 py-1.5 text-sm bg-gray-50 rounded border">
+                                {(
+                                  parseFloat(line.currentReading || "0") -
+                                  parseFloat(line.previousReading || "0")
+                                ).toFixed(1)}{" "}
+                                {util.unit || "unit"}
+                              </div>
+                            </div>
+                            <div>
+                              <label className="block text-xs text-gray-500 mb-1">
+                                {t("createBill.ratePerUnit", {
+                                  unit: util.unit || "unit",
+                                })}
+                              </label>
+                              <select
+                                value={line.selectedTariffId}
+                                onChange={(e) => {
+                                  const val = e.target.value;
+                                  if (val === "custom") {
+                                    updateLine(idx, {
+                                      selectedTariffId: "custom",
+                                      appliedRate: "0",
+                                    });
+                                  } else {
+                                    const tariff = tariffs.find(
+                                      (t) => t.id === val,
+                                    );
+                                    if (tariff) {
+                                      updateLine(idx, {
+                                        selectedTariffId: tariff.id,
+                                        appliedRate:
+                                          util.type === "FIXED"
+                                            ? tariff.fixedFee.toString()
+                                            : tariff.ratePerUnit.toString(),
+                                      });
+                                    }
+                                  }
+                                }}
+                                className="w-full border rounded px-2 py-1.5 text-xs text-gray-600 bg-gray-50 mb-1"
+                              >
+                                {tariffs
+                                  .filter((t) => t.utilityId === line.utilityId)
+                                  .sort(
+                                    (a, b) =>
+                                      new Date(b.effectiveFrom).getTime() -
+                                      new Date(a.effectiveFrom).getTime(),
+                                  )
+                                  .map((t) => (
+                                    <option key={t.id} value={t.id}>
+                                      ₴{t.ratePerUnit.toFixed(4)} (from{" "}
+                                      {new Date(
+                                        t.effectiveFrom,
+                                      ).toLocaleDateString()}
+                                      )
+                                    </option>
+                                  ))}
+                                <option value="custom">
+                                  {t("createBill.customRate")}
+                                </option>
+                              </select>
+                              {line.selectedTariffId === "custom" && (
+                                <input
+                                  type="number"
+                                  step="0.0001"
+                                  value={line.appliedRate}
+                                  onChange={(e) =>
+                                    updateLine(idx, {
+                                      appliedRate: e.target.value,
+                                    })
+                                  }
+                                  className="w-full border rounded px-3 py-1.5 text-sm"
+                                />
+                              )}
+                            </div>
+                            <div>
+                              <label className="block text-xs text-gray-500 mb-1">
+                                {t("createBill.cost")}
+                              </label>
+                              <div className="px-3 py-1.5 text-sm bg-gray-50 rounded border">
+                                ₴
+                                {(
+                                  (parseFloat(line.currentReading || "0") -
+                                    parseFloat(line.previousReading || "0")) *
+                                  parseFloat(line.appliedRate || "0")
+                                ).toFixed(2)}
+                              </div>
+                            </div>
                           </div>
-                        )}
-                        {line.inputType === "ESTIMATED" && (
-                          <div className="mt-2 text-xs text-orange-600">
-                            {t("createBill.estimatedReading")}
-                          </div>
-                        )}
-                      </>
-                    )
-                    )}
+
+                          {line.inputType === "HA" && util.haEntityId && (
+                            <div className="mt-2 text-xs text-purple-600">
+                              {t("createBill.fetchingFrom")}{" "}
+                              <code>{util.haEntityId}</code>
+                            </div>
+                          )}
+                          {line.inputType === "ESTIMATED" && (
+                            <div className="mt-2 text-xs text-orange-600">
+                              {t("createBill.estimatedReading")}
+                            </div>
+                          )}
+                        </>
+                      ))}
                   </div>
                 );
               })}
