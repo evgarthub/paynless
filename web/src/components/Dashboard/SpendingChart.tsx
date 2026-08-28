@@ -42,11 +42,11 @@ export default function SpendingChart({ from, to }: Props) {
 
   if (data.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border p-4">
-        <h3 className="text-sm font-medium text-gray-700 mb-3">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
           {t("dashboard.monthlySpending")}
         </h3>
-        <p className="text-gray-400 text-sm text-center py-8">
+        <p className="text-gray-400 dark:text-gray-500 text-sm text-center py-8">
           {t("common.noData")}
         </p>
       </div>
@@ -66,15 +66,15 @@ export default function SpendingChart({ from, to }: Props) {
   });
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border p-4">
-      <h3 className="text-sm font-medium text-gray-700 mb-3">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+      <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
         {t("dashboard.monthlySpending")}
       </h3>
       <ResponsiveContainer width="100%" height={300}>
         <BarChart data={chartData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-          <XAxis dataKey="period" tick={{ fontSize: 11 }} />
-          <YAxis tick={{ fontSize: 11 }} />
+          <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-stroke, #f0f0f0)" />
+          <XAxis dataKey="period" tick={{ fontSize: 11, fill: "#6b7280" }} />
+          <YAxis tick={{ fontSize: 11, fill: "#6b7280" }} />
           <Tooltip
             formatter={(value) => [
               `${"\u20B4"}${Number(value).toLocaleString()}`,

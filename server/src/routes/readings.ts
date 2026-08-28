@@ -1,17 +1,18 @@
 import { Hono } from "hono";
 import { db } from "../db";
 import { utilities, billItems, bills } from "../db/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 import { fetchHAState } from "../services/ha";
 import { estimateReading } from "../services/estimation";
 
 const app = new Hono();
 
 app.get("/ha/:utilityId", async (c) => {
+  const userId = c.get("userId");
   const util = db
     .select()
     .from(utilities)
-    .where(eq(utilities.id, c.req.param("utilityId")))
+    .where(and(eq(utilities.id, c.req.param("utilityId")), eq(utilities.userId, userId)))
     .get();
   if (!util) return c.json({ error: "Utility not found" }, 404);
   if (!util.haEntityId) return c.json({ error: "No HA entity configured" }, 400);
@@ -26,15 +27,17 @@ app.get("/ha/:utilityId", async (c) => {
 });
 
 app.get("/estimate/:utilityId", async (c) => {
+  const userId = c.get("userId");
   const { utilityId } = c.req.param();
   const previousReading = parseFloat(c.req.query("previousReading") || "0");
   const billingPeriod = c.req.query("billingPeriod") || "";
 
-  const estimate = await estimateReading(utilityId, previousReading, billingPeriod);
+  const estimate = await estimateReading(userId, utilityId, previousReading, billingPeriod);
   return c.json(estimate);
 });
 
 app.get("/previous/:utilityId", async (c) => {
+  const userId = c.get("userId");
   const { utilityId } = c.req.param();
   const limit = parseInt(c.req.query("limit") || "3", 10);
 
@@ -45,7 +48,7 @@ app.get("/previous/:utilityId", async (c) => {
     })
     .from(billItems)
     .innerJoin(bills, eq(billItems.billId, bills.id))
-    .where(eq(billItems.utilityId, utilityId))
+    .where(and(eq(billItems.utilityId, utilityId), eq(bills.userId, userId)))
     .orderBy(desc(bills.billingPeriod))
     .limit(limit)
     .all();

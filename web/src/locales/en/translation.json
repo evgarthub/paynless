@@ -3,7 +3,12 @@
     "bills": "Bills",
     "dashboard": "Dashboard",
     "utilities": "Utilities",
-    "tariffs": "Tariffs"
+    "tariffs": "Tariffs",
+    "logout": "Logout"
+  },
+  "theme": {
+    "light": "Light mode",
+    "dark": "Dark mode"
   },
   "common": {
     "close": "Close",

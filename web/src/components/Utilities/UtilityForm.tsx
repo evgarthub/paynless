@@ -39,45 +39,45 @@ export default function UtilityForm({ utility, onSaved, onCancel }: Props) {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6 mb-6">
-      <h2 className="text-lg font-semibold mb-4">{utility ? t("utilityForm.editUtility") : t("utilityForm.newUtility")}</h2>
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6 border border-gray-200 dark:border-gray-700">
+      <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">{utility ? t("utilityForm.editUtility") : t("utilityForm.newUtility")}</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t("utilityForm.name")}</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t("utilityForm.name")}</label>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
-            className="w-full border rounded-lg px-3 py-2 text-sm"
+            className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t("utilityForm.type")}</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t("utilityForm.type")}</label>
           <select
             value={type}
             onChange={(e) => setType(e.target.value as "CONSUMPTION" | "FIXED")}
-            className="w-full border rounded-lg px-3 py-2 text-sm"
+            className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
           >
             <option value="CONSUMPTION">{t("utilityForm.consumption")}</option>
             <option value="FIXED">{t("utilityForm.fixed")}</option>
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t("utilityForm.unit")}</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t("utilityForm.unit")}</label>
           <input
             value={unit}
             onChange={(e) => setUnit(e.target.value)}
             placeholder={t("utilityForm.unitPlaceholder")}
-            className="w-full border rounded-lg px-3 py-2 text-sm"
+            className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t("utilityForm.haEntityId")}</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t("utilityForm.haEntityId")}</label>
           <input
             value={haEntityId}
             onChange={(e) => setHaEntityId(e.target.value)}
             placeholder={t("utilityForm.haEntityPlaceholder")}
-            className="w-full border rounded-lg px-3 py-2 text-sm font-mono"
+            className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm font-mono bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
           />
         </div>
         <div className="col-span-2 flex gap-2">
@@ -91,7 +91,7 @@ export default function UtilityForm({ utility, onSaved, onCancel }: Props) {
           <button
             type="button"
             onClick={onCancel}
-            className="border px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50"
+            className="border border-gray-300 dark:border-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
           >
             {t("common.cancel")}
           </button>

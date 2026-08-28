@@ -17,7 +17,7 @@ export default function LanguageSwitcher() {
           className={`px-2 py-1 text-xs font-medium rounded ${
             i18n.language === lang.code
               ? "bg-indigo-600 text-white"
-              : "text-gray-500 hover:text-gray-700 hover:bg-gray-100"
+              : "text-gray-500 hover:text-gray-700 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-gray-200 dark:hover:bg-gray-800"
           }`}
         >
           {lang.label}

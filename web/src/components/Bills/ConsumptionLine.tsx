@@ -115,23 +115,23 @@ export default function ConsumptionLine({
   const manualButtonClass = `px-3 py-1.5 rounded text-xs font-medium ${
     line.inputType === "MANUAL"
       ? "bg-gray-800 text-white"
-      : "bg-gray-100 text-gray-600 hover:bg-gray-200"
+      : "bg-gray-100 text-gray-600 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
   }`;
 
   const haButtonClass = `px-3 py-1.5 rounded text-xs font-medium ${
     line.inputType === "HA"
       ? "bg-purple-600 text-white"
-      : "bg-purple-50 text-purple-600 hover:bg-purple-100 disabled:opacity-40"
+      : "bg-purple-50 text-purple-600 hover:bg-purple-100 disabled:opacity-40 dark:bg-purple-900/30 dark:text-purple-400 dark:hover:bg-purple-900/50"
   }`;
 
   const estimatedButtonClass = `px-3 py-1.5 rounded text-xs font-medium ${
     line.inputType === "ESTIMATED"
       ? "bg-orange-500 text-white"
-      : "bg-orange-50 text-orange-600 hover:bg-orange-100"
+      : "bg-orange-50 text-orange-600 hover:bg-orange-100 dark:bg-orange-900/30 dark:text-orange-400 dark:hover:bg-orange-900/50"
   }`;
 
-  const currentReadingClass = `w-full border rounded px-3 py-1.5 text-sm disabled:bg-gray-50 ${
-    validationError ? "border-red-500 bg-red-50" : ""
+  const currentReadingClass = `w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-1.5 text-sm disabled:bg-gray-50 dark:disabled:bg-gray-700 ${
+    validationError ? "border-red-500 bg-red-50 dark:bg-red-900/30" : ""
   }`;
 
   return (
@@ -163,7 +163,7 @@ export default function ConsumptionLine({
 
       <div className="grid grid-cols-2 gap-3">
         <div>
-          <label className="block text-xs text-gray-500 mb-1">
+          <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">
             {t("createBill.previousReading")}
           </label>
           <div className="flex gap-1">
@@ -172,13 +172,13 @@ export default function ConsumptionLine({
               step="0.1"
               value={line.previousReading}
               onChange={handlePreviousReadingChange}
-              className="w-full border rounded px-3 py-1.5 text-sm"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-1.5 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
             />
             {previousReadings.length > 0 && (
               <select
                 value={line.previousReading}
                 onChange={handlePreviousReadingSelect}
-                className="border rounded px-2 py-1.5 text-xs text-gray-600 bg-gray-50 min-w-[140px]"
+                className="border border-gray-300 dark:border-gray-600 rounded px-2 py-1.5 text-xs text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 min-w-[140px]"
               >
                 {previousReadings.map((r) => (
                   <option key={r.billingPeriod} value={r.value}>
@@ -190,7 +190,7 @@ export default function ConsumptionLine({
           </div>
         </div>
         <div>
-          <label className="block text-xs text-gray-500 mb-1">
+          <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">
             {t("createBill.currentReading")}
           </label>
           <input
@@ -202,28 +202,28 @@ export default function ConsumptionLine({
             className={currentReadingClass}
           />
           {validationError && (
-            <p className="text-xs text-red-600 mt-1">{validationError}</p>
+            <p className="text-xs text-red-600 dark:text-red-400 mt-1">{validationError}</p>
           )}
         </div>
       </div>
 
       <div className="grid grid-cols-3 gap-3 mt-3">
         <div>
-          <label className="block text-xs text-gray-500 mb-1">
+          <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">
             {t("createBill.consumption", { unit: util.unit || "unit" })}
           </label>
-          <div className="px-3 py-1.5 text-sm bg-gray-50 rounded border">
+          <div className="px-3 py-1.5 text-sm bg-gray-50 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600">
             {consumption} {util.unit || "unit"}
           </div>
         </div>
         <div>
-          <label className="block text-xs text-gray-500 mb-1">
+          <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">
             {t("createBill.ratePerUnit", { unit: util.unit || "unit" })}
           </label>
           <select
             value={line.selectedTariffId}
             onChange={handleRateSelectChange}
-            className="w-full border rounded px-2 py-1.5 text-xs text-gray-600 bg-gray-50 mb-1"
+            className="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1.5 text-xs text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 mb-1"
           >
             {sortedTariffs.map((tariff) => (
               <option key={tariff.id} value={tariff.id}>
@@ -239,27 +239,27 @@ export default function ConsumptionLine({
               step="0.0001"
               value={line.appliedRate}
               onChange={handleCustomRateChange}
-              className="w-full border rounded px-3 py-1.5 text-sm"
+              className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-1.5 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
             />
           )}
         </div>
         <div>
-          <label className="block text-xs text-gray-500 mb-1">
+          <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">
             {t("createBill.cost")}
           </label>
-          <div className="px-3 py-1.5 text-sm bg-gray-50 rounded border">
+          <div className="px-3 py-1.5 text-sm bg-gray-50 dark:bg-gray-700 rounded border border-gray-300 dark:border-gray-600">
             ₴{cost}
           </div>
         </div>
       </div>
 
       {line.inputType === "HA" && util.haEntityId && (
-        <div className="mt-2 text-xs text-purple-600">
+        <div className="mt-2 text-xs text-purple-600 dark:text-purple-400">
           {t("createBill.fetchingFrom")} <code>{util.haEntityId}</code>
         </div>
       )}
       {line.inputType === "ESTIMATED" && (
-        <div className="mt-2 text-xs text-orange-600">
+        <div className="mt-2 text-xs text-orange-600 dark:text-orange-400">
           {t("createBill.estimatedReading")}
         </div>
       )}

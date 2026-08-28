@@ -84,15 +84,15 @@ export default function YearComparisonChart() {
   });
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border p-4">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
       <div className="flex items-center justify-between mb-3">
-        <h3 className="text-sm font-medium text-gray-700">
+        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
           {t("dashboard.yearComparison")}
         </h3>
         <select
           value={selectedId}
           onChange={(e) => setSelectedId(e.target.value)}
-          className="text-sm border rounded-md px-2 py-1 text-gray-600"
+          className="text-sm border border-gray-300 dark:border-gray-600 rounded-md px-2 py-1 text-gray-600 dark:text-gray-300 bg-white dark:bg-gray-700"
         >
           {utilities.map((u) => (
             <option key={u.id} value={u.id}>
@@ -109,9 +109,9 @@ export default function YearComparisonChart() {
                 type="checkbox"
                 checked={selectedYears.has(year)}
                 onChange={() => toggleYear(year)}
-                className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                className="rounded border-gray-300 dark:border-gray-600 text-indigo-600 focus:ring-indigo-500"
               />
-              <span className="text-sm text-gray-600">{year}</span>
+              <span className="text-sm text-gray-600 dark:text-gray-400">{year}</span>
               <span
                 className="w-2.5 h-2.5 rounded-full inline-block"
                 style={{
@@ -125,15 +125,15 @@ export default function YearComparisonChart() {
         </div>
       )}
       {data.length === 0 || visibleYears.length === 0 ? (
-        <p className="text-gray-400 text-sm text-center py-8">
+        <p className="text-gray-400 dark:text-gray-500 text-sm text-center py-8">
           {t("common.noData")}
         </p>
       ) : (
         <ResponsiveContainer width="100%" height={300}>
           <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis dataKey="month" tick={{ fontSize: 11 }} />
-            <YAxis tick={{ fontSize: 11 }} />
+            <CartesianGrid strokeDasharray="3 3" stroke="var(--grid-stroke, #f0f0f0)" />
+            <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#6b7280" }} />
+            <YAxis tick={{ fontSize: 11, fill: "#6b7280" }} />
             <Tooltip
               formatter={(value) => [
                 `${Number(value)} ${selected?.unit || ""}`,

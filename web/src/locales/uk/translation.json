@@ -3,7 +3,12 @@
     "bills": "Рахунки",
     "dashboard": "Панель",
     "utilities": "Послуги",
-    "tariffs": "Тарифи"
+    "tariffs": "Тарифи",
+    "logout": "Вийти"
+  },
+  "theme": {
+    "light": "Світла тема",
+    "dark": "Темна тема"
   },
   "common": {
     "close": "Закрити",

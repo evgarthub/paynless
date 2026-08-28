@@ -1,19 +1,34 @@
 import { db } from "../db";
-import { billItems } from "../db/schema";
-import { eq, desc } from "drizzle-orm";
+import { billItems, bills } from "../db/schema";
+import { eq, and, inArray, desc } from "drizzle-orm";
 import type { EstimateResult } from "../types";
 
 export async function estimateReading(
+  userId: string,
   utilityId: string,
   previousReading: number,
   billingPeriod: string
 ): Promise<EstimateResult> {
-  const history = await db
+  const userBillIds = db
+    .select({ id: bills.id })
+    .from(bills)
+    .where(eq(bills.userId, userId))
+    .all()
+    .map((b) => b.id);
+
+  if (userBillIds.length === 0) {
+    return { projectedReading: previousReading, dailyAvg: 0, daysElapsed: 0 };
+  }
+
+  const history = db
     .select()
     .from(billItems)
-    .where(eq(billItems.utilityId, utilityId))
+    .where(
+      and(eq(billItems.utilityId, utilityId), inArray(billItems.billId, userBillIds))
+    )
     .orderBy(desc(billItems.id))
-    .limit(12);
+    .limit(12)
+    .all();
 
   if (history.length === 0) {
     return { projectedReading: previousReading, dailyAvg: 0, daysElapsed: 0 };
