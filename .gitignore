@@ -51,3 +51,4 @@ server/drizzle/meta/
 
 # Docker
 docker-compose.override.yml
+*.tar
