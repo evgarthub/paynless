@@ -48,7 +48,7 @@ export default function BillsPage() {
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-2xl font-bold">{t("bills.title")}</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{t("bills.title")}</h1>
         <button
           onClick={() => setShowCreate(true)}
           className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-indigo-700"
@@ -64,39 +64,39 @@ export default function BillsPage() {
         />
       )}
 
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden border border-gray-200 dark:border-gray-700">
         <table className="w-full text-sm">
-          <thead className="bg-gray-50 text-left">
+          <thead className="bg-gray-50 dark:bg-gray-700 text-left">
             <tr>
-              <th className="px-4 py-3 font-medium">{t("bills.period")}</th>
-              <th className="px-4 py-3 font-medium">{t("bills.total")}</th>
-              <th className="px-4 py-3 font-medium">{t("bills.status")}</th>
-              <th className="px-4 py-3 font-medium">{t("common.actions")}</th>
+              <th className="px-4 py-3 font-medium text-gray-900 dark:text-gray-100">{t("bills.period")}</th>
+              <th className="px-4 py-3 font-medium text-gray-900 dark:text-gray-100">{t("bills.total")}</th>
+              <th className="px-4 py-3 font-medium text-gray-900 dark:text-gray-100">{t("bills.status")}</th>
+              <th className="px-4 py-3 font-medium text-gray-900 dark:text-gray-100">{t("common.actions")}</th>
             </tr>
           </thead>
-          <tbody className="divide-y">
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
             {bills.map((b) => {
               const isExpanded = expanded.some((e) => e.id === b.id);
               const expandedData = expanded.find((e) => e.id === b.id);
               return (
                 <Fragment key={b.id}>
                   <tr
-                    className={`hover:bg-gray-50 cursor-pointer ${isExpanded ? "bg-indigo-50" : ""}`}
+                    className={`hover:bg-gray-50 dark:hover:bg-gray-700 cursor-pointer ${isExpanded ? "bg-indigo-50 dark:bg-indigo-900/30" : ""}`}
                     onClick={() => toggleExpand(b)}
                   >
                     <td
-                      className="px-4 py-3 font-medium"
+                      className="px-4 py-3 font-medium text-gray-900 dark:text-gray-100"
                       title={b.createdAt ? new Date(b.createdAt).toLocaleString() : undefined}
                     >
                       {b.billingPeriod}
                     </td>
-                    <td className="px-4 py-3">₴{b.totalAmount.toFixed(2)}</td>
+                    <td className="px-4 py-3 text-gray-900 dark:text-gray-100">₴{b.totalAmount.toFixed(2)}</td>
                     <td className="px-4 py-3">
                       <span
                         className={`px-2 py-1 rounded text-xs font-medium ${
                           b.status === "PAID"
-                            ? "bg-green-100 text-green-700"
-                            : "bg-yellow-100 text-yellow-700"
+                            ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
+                            : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300"
                         }`}
                       >
                         {b.status === "PAID" ? t("bills.paid") : t("bills.unpaid")}
@@ -105,13 +105,13 @@ export default function BillsPage() {
                     <td className="px-4 py-3">
                       <button
                         onClick={(e) => { e.stopPropagation(); toggleStatus(b); }}
-                        className="text-indigo-600 hover:text-indigo-800 text-xs mr-3"
+                        className="text-indigo-600 hover:text-indigo-800 dark:text-indigo-400 dark:hover:text-indigo-300 text-xs mr-3"
                       >
                         {t("bills.toggle")}
                       </button>
                       <button
                         onClick={(e) => { e.stopPropagation(); handleDelete(b.id); }}
-                        className="text-red-600 hover:text-red-800 text-xs"
+                        className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300 text-xs"
                       >
                         {t("common.delete")}
                       </button>
@@ -119,52 +119,52 @@ export default function BillsPage() {
                   </tr>
                   {isExpanded && expandedData && (
                     <tr>
-                      <td colSpan={4} className="px-4 py-4 bg-gray-50">
+                      <td colSpan={4} className="px-4 py-4 bg-gray-50 dark:bg-gray-700">
                         <div className="mb-3 flex items-center gap-4">
-                          <span className="text-lg font-bold">₴{expandedData.totalAmount.toFixed(2)}</span>
+                          <span className="text-lg font-bold text-gray-900 dark:text-gray-100">₴{expandedData.totalAmount.toFixed(2)}</span>
                           <span
                             className={`px-2 py-1 rounded text-xs font-medium ${
                               expandedData.status === "PAID"
-                                ? "bg-green-100 text-green-700"
-                                : "bg-yellow-100 text-yellow-700"
+                                ? "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
+                                : "bg-yellow-100 text-yellow-700 dark:bg-yellow-900 dark:text-yellow-300"
                             }`}
                           >
                             {expandedData.status === "PAID" ? t("bills.paid") : t("bills.unpaid")}
                           </span>
                         </div>
                         <table className="w-full text-sm">
-                          <thead className="text-left text-gray-500 border-b">
+                          <thead className="text-left text-gray-500 dark:text-gray-400 border-b border-gray-200 dark:border-gray-600">
                             <tr>
-                              <th className="pb-2 font-medium">{t("bills.utility")}</th>
-                              <th className="pb-2 font-medium">{t("bills.input")}</th>
-                              <th className="pb-2 font-medium">{t("bills.previous")}</th>
-                              <th className="pb-2 font-medium">{t("bills.current")}</th>
-                              <th className="pb-2 font-medium">{t("bills.consumption")}</th>
-                              <th className="pb-2 font-medium">{t("bills.rate")}</th>
-                              <th className="pb-2 font-medium">{t("bills.cost")}</th>
+                              <th className="pb-2 font-medium text-gray-900 dark:text-gray-100">{t("bills.utility")}</th>
+                              <th className="pb-2 font-medium text-gray-900 dark:text-gray-100">{t("bills.input")}</th>
+                              <th className="pb-2 font-medium text-gray-900 dark:text-gray-100">{t("bills.previous")}</th>
+                              <th className="pb-2 font-medium text-gray-900 dark:text-gray-100">{t("bills.current")}</th>
+                              <th className="pb-2 font-medium text-gray-900 dark:text-gray-100">{t("bills.consumption")}</th>
+                              <th className="pb-2 font-medium text-gray-900 dark:text-gray-100">{t("bills.rate")}</th>
+                              <th className="pb-2 font-medium text-gray-900 dark:text-gray-100">{t("bills.cost")}</th>
                             </tr>
                           </thead>
-                          <tbody className="divide-y">
+                          <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
                             {expandedData.items.map((item) => (
                               <tr key={item.id}>
-                                <td className="py-2 font-medium">{utilityName(item.utilityId)}</td>
+                                <td className="py-2 font-medium text-gray-900 dark:text-gray-100">{utilityName(item.utilityId)}</td>
                                 <td className="py-2">
                                   <span className={`px-2 py-0.5 rounded text-xs ${
                                     item.inputType === "HA"
-                                      ? "bg-purple-100 text-purple-700"
+                                      ? "bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300"
                                       : item.inputType === "ESTIMATED"
-                                      ? "bg-orange-100 text-orange-700"
-                                      : "bg-gray-100 text-gray-700"
+                                      ? "bg-orange-100 text-orange-700 dark:bg-orange-900 dark:text-orange-300"
+                                      : "bg-gray-100 text-gray-700 dark:bg-gray-700 dark:text-gray-300"
                                   }`}>
                                     {item.inputType}
                                     {item.isEstimated && ` ${t("bills.estimated")}`}
                                   </span>
                                 </td>
-                                <td className="py-2">{item.previousReading != null ? item.previousReading.toFixed(1) : t("common.noData")}</td>
-                                <td className="py-2">{item.currentReading != null ? item.currentReading.toFixed(1) : t("common.noData")}</td>
-                                <td className="py-2">{item.consumption != null ? item.consumption.toFixed(1) : t("common.noData")}</td>
-                                <td className="py-2">{item.appliedRate.toFixed(4)}</td>
-                                <td className="py-2 font-medium">₴{item.totalCost.toFixed(2)}</td>
+                                <td className="py-2 text-gray-900 dark:text-gray-100">{item.previousReading != null ? item.previousReading.toFixed(1) : t("common.noData")}</td>
+                                <td className="py-2 text-gray-900 dark:text-gray-100">{item.currentReading != null ? item.currentReading.toFixed(1) : t("common.noData")}</td>
+                                <td className="py-2 text-gray-900 dark:text-gray-100">{item.consumption != null ? item.consumption.toFixed(1) : t("common.noData")}</td>
+                                <td className="py-2 text-gray-900 dark:text-gray-100">{item.appliedRate.toFixed(4)}</td>
+                                <td className="py-2 font-medium text-gray-900 dark:text-gray-100">₴{item.totalCost.toFixed(2)}</td>
                               </tr>
                             ))}
                           </tbody>
@@ -177,7 +177,7 @@ export default function BillsPage() {
             })}
             {bills.length === 0 && (
               <tr>
-                <td colSpan={4} className="px-4 py-8 text-center text-gray-400">
+                <td colSpan={4} className="px-4 py-8 text-center text-gray-400 dark:text-gray-500">
                   {t("bills.emptyState")}
                 </td>
               </tr>

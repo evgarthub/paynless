@@ -14,15 +14,15 @@ export default function TimeRangeSelector({ value, onChange }: Props) {
   const { t } = useTranslation();
 
   return (
-    <div className="flex gap-1 bg-gray-100 rounded-lg p-1">
+    <div className="flex gap-1 bg-gray-100 dark:bg-gray-700 rounded-lg p-1">
       {ranges.map((r) => (
         <button
           key={r}
           onClick={() => onChange(r)}
           className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors ${
             value === r
-              ? "bg-white text-indigo-600 shadow-sm"
-              : "text-gray-500 hover:text-gray-700"
+              ? "bg-white dark:bg-gray-800 text-indigo-600 dark:text-indigo-400 shadow-sm"
+              : "text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
           }`}
         >
           {t(`dashboard.range.${r}`)}

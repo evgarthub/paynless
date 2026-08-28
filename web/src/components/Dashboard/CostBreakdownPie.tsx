@@ -35,11 +35,11 @@ export default function CostBreakdownPie({ from, to }: Props) {
 
   if (!data || byUtility.length === 0) {
     return (
-      <div className="bg-white rounded-xl shadow-sm border p-4">
-        <h3 className="text-sm font-medium text-gray-700 mb-3">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
           {t("dashboard.costBreakdown")}
         </h3>
-        <p className="text-gray-400 text-sm text-center py-8">
+        <p className="text-gray-400 dark:text-gray-500 text-sm text-center py-8">
           {t("common.noData")}
         </p>
       </div>
@@ -47,8 +47,8 @@ export default function CostBreakdownPie({ from, to }: Props) {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border p-4">
-      <h3 className="text-sm font-medium text-gray-700 mb-3">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-4">
+      <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
         {t("dashboard.costBreakdown")}
       </h3>
       <ResponsiveContainer width="100%" height={300}>

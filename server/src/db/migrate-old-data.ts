@@ -31,11 +31,13 @@ function dateToBillingPeriod(date: Date): string {
   return `${y}-${m}`;
 }
 
+type TariffRow = typeof schema.tariffRates.$inferSelect;
+
 function findApplicableRate(
   utilityId: string,
   recordDate: Date,
-  tariffRates: schema.TariffRate[]
-): schema.TariffRate | undefined {
+  tariffRates: TariffRow[]
+): TariffRow | undefined {
   const applicable = tariffRates
     .filter((r) => r.utilityId === utilityId && r.effectiveFrom <= recordDate)
     .sort((a, b) => b.effectiveFrom.getTime() - a.effectiveFrom.getTime());

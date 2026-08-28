@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { db } from "../db";
 import { bills, billItems, utilities } from "../db/schema";
-import { eq, desc } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 import { nanoid } from "nanoid";
 import { fetchHAState } from "../services/ha";
 import { estimateReading } from "../services/estimation";
@@ -9,18 +9,30 @@ import { estimateReading } from "../services/estimation";
 const app = new Hono();
 
 app.get("/", async (c) => {
-  const all = db.select().from(bills).orderBy(desc(bills.billingPeriod)).all();
+  const userId = c.get("userId");
+  const all = db
+    .select()
+    .from(bills)
+    .where(eq(bills.userId, userId))
+    .orderBy(desc(bills.billingPeriod))
+    .all();
   return c.json(all);
 });
 
 app.get("/:id", async (c) => {
-  const bill = db.select().from(bills).where(eq(bills.id, c.req.param("id"))).get();
+  const userId = c.get("userId");
+  const bill = db
+    .select()
+    .from(bills)
+    .where(and(eq(bills.id, c.req.param("id")), eq(bills.userId, userId)))
+    .get();
   if (!bill) return c.json({ error: "Not found" }, 404);
   const items = db.select().from(billItems).where(eq(billItems.billId, bill.id)).all();
   return c.json({ ...bill, items });
 });
 
 app.post("/", async (c) => {
+  const userId = c.get("userId");
   const body = await c.req.json();
   const billId = nanoid();
   let totalAmount = 0;
@@ -28,7 +40,11 @@ app.post("/", async (c) => {
   const items = [];
 
   for (const item of body.items) {
-    const utility = db.select().from(utilities).where(eq(utilities.id, item.utilityId)).get();
+    const utility = db
+      .select()
+      .from(utilities)
+      .where(and(eq(utilities.id, item.utilityId), eq(utilities.userId, userId)))
+      .get();
     if (!utility) continue;
 
     let previousReading = item.previousReading ?? 0;
@@ -45,6 +61,7 @@ app.post("/", async (c) => {
         currentReading = parseFloat(state.state);
       } else if (item.inputType === "ESTIMATED") {
         const estimate = await estimateReading(
+          userId,
           utility.id,
           previousReading,
           body.billingPeriod
@@ -77,6 +94,7 @@ app.post("/", async (c) => {
   db.insert(bills)
     .values({
       id: billId,
+      userId,
       billingPeriod: body.billingPeriod,
       totalAmount: Math.round(totalAmount * 100) / 100,
       status: "UNPAID",
@@ -92,11 +110,12 @@ app.post("/", async (c) => {
 });
 
 app.patch("/:id/status", async (c) => {
+  const userId = c.get("userId");
   const body = await c.req.json();
   const row = db
     .update(bills)
     .set({ status: body.status })
-    .where(eq(bills.id, c.req.param("id")))
+    .where(and(eq(bills.id, c.req.param("id")), eq(bills.userId, userId)))
     .returning()
     .get();
   if (!row) return c.json({ error: "Not found" }, 404);
@@ -104,9 +123,10 @@ app.patch("/:id/status", async (c) => {
 });
 
 app.delete("/:id", async (c) => {
+  const userId = c.get("userId");
   const row = db
     .delete(bills)
-    .where(eq(bills.id, c.req.param("id")))
+    .where(and(eq(bills.id, c.req.param("id")), eq(bills.userId, userId)))
     .returning()
     .get();
   if (!row) return c.json({ error: "Not found" }, 404);

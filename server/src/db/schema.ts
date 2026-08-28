@@ -1,7 +1,18 @@
 import { sqliteTable, text, real, integer } from "drizzle-orm/sqlite-core";
 
+export const users = sqliteTable("users", {
+  id: text("id").primaryKey(),
+  email: text("email").notNull().unique(),
+  name: text("name"),
+  googleId: text("google_id").unique(),
+  createdAt: integer("created_at", { mode: "timestamp" }).$defaultFn(
+    () => new Date()
+  ),
+});
+
 export const utilities = sqliteTable("utilities", {
   id: text("id").primaryKey(),
+  userId: text("user_id").references(() => users.id, { onDelete: "cascade" }),
   name: text("name").notNull(),
   type: text("type", { enum: ["CONSUMPTION", "FIXED"] }).notNull(),
   unit: text("unit"),
@@ -24,6 +35,7 @@ export const tariffRates = sqliteTable("tariff_rates", {
 
 export const bills = sqliteTable("bills", {
   id: text("id").primaryKey(),
+  userId: text("user_id").references(() => users.id, { onDelete: "cascade" }),
   billingPeriod: text("billing_period").notNull(),
   totalAmount: real("total_amount").notNull().default(0),
   status: text("status", { enum: ["UNPAID", "PAID"] }).default("UNPAID"),

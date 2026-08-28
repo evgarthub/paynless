@@ -259,7 +259,7 @@ export default function CreateBillModal({ onSaved, onCancel }: Props) {
       return (
         <div
           key={line.utilityId}
-          className={`border rounded-lg p-4 ${!line.included ? "opacity-50" : ""}`}
+          className={`border border-gray-200 dark:border-gray-700 rounded-lg p-4 ${!line.included ? "opacity-50" : ""}`}
         >
           <div className="flex items-center gap-3 mb-3">
             <label className="flex items-center gap-2 cursor-pointer">
@@ -267,15 +267,15 @@ export default function CreateBillModal({ onSaved, onCancel }: Props) {
                 type="checkbox"
                 checked={line.included}
                 onChange={onIncludedChange}
-                className="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
+                className="rounded border-gray-300 dark:border-gray-600 text-indigo-600 focus:ring-indigo-500"
               />
-              <span className="font-semibold">{util.name}</span>
+              <span className="font-semibold text-gray-900 dark:text-gray-100">{util.name}</span>
             </label>
             <span
               className={`px-2 py-0.5 rounded text-xs font-medium ${
                 util.type === "CONSUMPTION"
-                  ? "bg-blue-100 text-blue-700"
-                  : "bg-green-100 text-green-700"
+                  ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300"
+                  : "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
               }`}
             >
               {util.type}
@@ -318,13 +318,13 @@ export default function CreateBillModal({ onSaved, onCancel }: Props) {
 
   return (
     <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-4xl max-h-[90vh] overflow-y-auto border border-gray-200 dark:border-gray-700">
         <div className="p-6">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-xl font-bold">{t("createBill.title")}</h2>
+            <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">{t("createBill.title")}</h2>
             <button
               onClick={onCancel}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-gray-400 hover:text-gray-600 dark:text-gray-500 dark:hover:text-gray-300"
             >
               ✕
             </button>
@@ -332,14 +332,14 @@ export default function CreateBillModal({ onSaved, onCancel }: Props) {
 
           <form onSubmit={handleSubmit}>
             <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                 {t("createBill.billingPeriod")}
               </label>
               <input
                 type="month"
                 value={billingPeriod}
                 onChange={handleBillingPeriodChange}
-                className="border rounded-lg px-3 py-2 text-sm"
+                className="border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
               />
             </div>
 
@@ -358,7 +358,7 @@ export default function CreateBillModal({ onSaved, onCancel }: Props) {
               <button
                 type="button"
                 onClick={onCancel}
-                className="border px-6 py-2 rounded-lg text-sm font-medium hover:bg-gray-50"
+                className="border border-gray-300 dark:border-gray-600 px-6 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
               >
                 {t("common.cancel")}
               </button>

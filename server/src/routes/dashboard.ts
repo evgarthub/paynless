@@ -1,11 +1,12 @@
 import { Hono } from "hono";
 import { db } from "../db";
 import { bills, billItems, utilities } from "../db/schema";
-import { desc } from "drizzle-orm";
+import { eq, and, desc } from "drizzle-orm";
 
 const app = new Hono();
 
 app.get("/summary", async (c) => {
+  const userId = c.get("userId");
   const period =
     c.req.query("period") ||
     `${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, "0")}`;
@@ -22,6 +23,7 @@ app.get("/summary", async (c) => {
   const allBills = db
     .select()
     .from(bills)
+    .where(eq(bills.userId, userId))
     .orderBy(desc(bills.billingPeriod))
     .all();
 
@@ -74,6 +76,7 @@ app.get("/summary", async (c) => {
 });
 
 app.get("/spending", async (c) => {
+  const userId = c.get("userId");
   const from = c.req.query("from") || "2000-01";
   const to = c.req.query("to") || "2099-12";
   const groupBy = c.req.query("groupBy") || "period";
@@ -81,6 +84,7 @@ app.get("/spending", async (c) => {
   const allBills = db
     .select()
     .from(bills)
+    .where(eq(bills.userId, userId))
     .orderBy(desc(bills.billingPeriod))
     .all();
   const filtered = allBills.filter(
@@ -88,7 +92,11 @@ app.get("/spending", async (c) => {
   );
 
   const allItems = db.select().from(billItems).all();
-  const allUtilities = db.select().from(utilities).all();
+  const allUtilities = db
+    .select()
+    .from(utilities)
+    .where(eq(utilities.userId, userId))
+    .all();
   const utilityMap = new Map(allUtilities.map((u) => [u.id, u]));
 
   if (groupBy === "utility") {
@@ -162,6 +170,7 @@ app.get("/spending", async (c) => {
 });
 
 app.get("/consumption-trend", async (c) => {
+  const userId = c.get("userId");
   const utilityId = c.req.query("utilityId");
   const from = c.req.query("from") || "2000-01";
   const to = c.req.query("to") || "2099-12";
@@ -170,9 +179,17 @@ app.get("/consumption-trend", async (c) => {
     return c.json({ error: "utilityId is required" }, 400);
   }
 
+  const util = db
+    .select()
+    .from(utilities)
+    .where(and(eq(utilities.id, utilityId), eq(utilities.userId, userId)))
+    .get();
+  if (!util) return c.json({ error: "Not found" }, 404);
+
   const allBills = db
     .select()
     .from(bills)
+    .where(eq(bills.userId, userId))
     .orderBy(desc(bills.billingPeriod))
     .all();
   const filtered = allBills.filter(
@@ -180,8 +197,6 @@ app.get("/consumption-trend", async (c) => {
   );
 
   const allItems = db.select().from(billItems).all();
-  const allUtilities = db.select().from(utilities).all();
-  const util = allUtilities.find((u) => u.id === utilityId);
 
   const result = filtered
     .map((bill) => {
@@ -192,7 +207,7 @@ app.get("/consumption-trend", async (c) => {
         period: bill.billingPeriod,
         consumption: item?.consumption || 0,
         cost: item?.totalCost || 0,
-        unit: util?.unit,
+        unit: util.unit,
       };
     })
     .filter((r) => r.consumption > 0 || r.cost > 0)
@@ -202,12 +217,14 @@ app.get("/consumption-trend", async (c) => {
 });
 
 app.get("/spending-by-type", async (c) => {
+  const userId = c.get("userId");
   const from = c.req.query("from") || "2000-01";
   const to = c.req.query("to") || "2099-12";
 
   const allBills = db
     .select()
     .from(bills)
+    .where(eq(bills.userId, userId))
     .orderBy(desc(bills.billingPeriod))
     .all();
   const filtered = allBills.filter(
@@ -215,7 +232,11 @@ app.get("/spending-by-type", async (c) => {
   );
 
   const allItems = db.select().from(billItems).all();
-  const allUtilities = db.select().from(utilities).all();
+  const allUtilities = db
+    .select()
+    .from(utilities)
+    .where(eq(utilities.userId, userId))
+    .all();
   const utilityTypeMap = new Map(allUtilities.map((u) => [u.id, u.type]));
 
   let consumption = 0;
@@ -240,21 +261,28 @@ app.get("/spending-by-type", async (c) => {
 });
 
 app.get("/year-comparison", async (c) => {
+  const userId = c.get("userId");
   const utilityId = c.req.query("utilityId");
 
   if (!utilityId) {
     return c.json({ error: "utilityId is required" }, 400);
   }
 
+  const util = db
+    .select()
+    .from(utilities)
+    .where(and(eq(utilities.id, utilityId), eq(utilities.userId, userId)))
+    .get();
+  if (!util) return c.json({ error: "Not found" }, 404);
+
   const allBills = db
     .select()
     .from(bills)
+    .where(eq(bills.userId, userId))
     .orderBy(desc(bills.billingPeriod))
     .all();
 
   const allItems = db.select().from(billItems).all();
-  const allUtilities = db.select().from(utilities).all();
-  const util = allUtilities.find((u) => u.id === utilityId);
 
   const monthNames = [
     "January",

@@ -46,15 +46,15 @@ export default function TariffForm({ tariff, utilities, onSaved, onCancel }: Pro
   };
 
   return (
-    <div className="bg-white rounded-lg shadow p-6 mb-6">
-      <h2 className="text-lg font-semibold mb-4">{tariff ? t("tariffForm.editTariff") : t("tariffForm.newTariff")}</h2>
+    <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-6 border border-gray-200 dark:border-gray-700">
+      <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">{tariff ? t("tariffForm.editTariff") : t("tariffForm.newTariff")}</h2>
       <form onSubmit={handleSubmit} className="grid grid-cols-2 gap-4">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t("tariffForm.utility")}</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t("tariffForm.utility")}</label>
           <select
             value={utilityId}
             onChange={(e) => setUtilityId(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2 text-sm"
+            className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
           >
             {utilities.map((u) => (
               <option key={u.id} value={u.id}>{u.name}</option>
@@ -62,42 +62,42 @@ export default function TariffForm({ tariff, utilities, onSaved, onCancel }: Pro
           </select>
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t("tariffForm.ratePerUnit")}</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t("tariffForm.ratePerUnit")}</label>
           <input
             type="number"
             step="0.0001"
             value={ratePerUnit}
             onChange={(e) => setRatePerUnit(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2 text-sm"
+            className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t("tariffForm.fixedFee")}</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t("tariffForm.fixedFee")}</label>
           <input
             type="number"
             step="0.01"
             value={fixedFee}
             onChange={(e) => setFixedFee(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2 text-sm"
+            className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
           />
         </div>
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t("tariffForm.effectiveFrom")}</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t("tariffForm.effectiveFrom")}</label>
           <input
             type="date"
             value={effectiveFrom}
             onChange={(e) => setEffectiveFrom(e.target.value)}
-            className="w-full border rounded-lg px-3 py-2 text-sm"
+            className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
           />
         </div>
         <div className="col-span-2">
-          <label className="block text-sm font-medium text-gray-700 mb-1">{t("tariffForm.referenceUrl")}</label>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">{t("tariffForm.referenceUrl")}</label>
           <input
             type="url"
             value={referenceUrl}
             onChange={(e) => setReferenceUrl(e.target.value)}
             placeholder={t("tariffForm.referencePlaceholder")}
-            className="w-full border rounded-lg px-3 py-2 text-sm"
+            className="w-full border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
           />
         </div>
         <div className="col-span-2 flex gap-2">
@@ -111,7 +111,7 @@ export default function TariffForm({ tariff, utilities, onSaved, onCancel }: Pro
           <button
             type="button"
             onClick={onCancel}
-            className="border px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50"
+            className="border border-gray-300 dark:border-gray-600 px-4 py-2 rounded-lg text-sm font-medium hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300"
           >
             {t("common.cancel")}
           </button>

@@ -52,13 +52,13 @@ export default function FixedFeeLine({ line, tariffs, onUpdate }: Props) {
   return (
     <div className="grid grid-cols-2 gap-3">
       <div>
-        <label className="block text-xs text-gray-500 mb-1">
+        <label className="block text-xs text-gray-500 dark:text-gray-400 mb-1">
           {t("createBill.fixedFee")}
         </label>
         <select
           value={line.selectedTariffId}
           onChange={handleTariffChange}
-          className="w-full border rounded px-2 py-1.5 text-xs text-gray-600 bg-gray-50 mb-1"
+          className="w-full border border-gray-300 dark:border-gray-600 rounded px-2 py-1.5 text-xs text-gray-600 dark:text-gray-300 bg-gray-50 dark:bg-gray-700 mb-1"
         >
           {sortedTariffs.map((tariff) => (
             <option key={tariff.id} value={tariff.id}>
@@ -74,7 +74,7 @@ export default function FixedFeeLine({ line, tariffs, onUpdate }: Props) {
             step="0.01"
             value={line.appliedRate}
             onChange={handleCustomAmountChange}
-            className="w-full border rounded px-3 py-1.5 text-sm"
+            className="w-full border border-gray-300 dark:border-gray-600 rounded px-3 py-1.5 text-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
           />
         )}
       </div>
