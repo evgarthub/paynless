@@ -214,6 +214,17 @@ Body: { "message": "Don't forget to submit your bills!", "title": "Paynless Remi
 
 The schedule defaults to the 1st of every month at 9 AM and is configurable via `CRON_SCHEDULE`.
 
+## Screenshots
+
+<img width="1874" height="1106" alt="brave_RtTXWc8PJH" src="https://github.com/user-attachments/assets/dfa9fa92-e913-484e-9c5d-26faf7f0245a" />
+
+<img width="1874" height="1106" alt="brave_jajJVJLaxl" src="https://github.com/user-attachments/assets/b166e29e-c1a9-4b2a-a711-bf37eca913a9" />
+
+<img width="1874" height="1106" alt="brave_9BOxsvT7eT" src="https://github.com/user-attachments/assets/add38c02-a0e9-4ad0-88ec-ecb354a7cc36" />
+
+<img width="1874" height="1106" alt="brave_HSSkr4Qf4m" src="https://github.com/user-attachments/assets/be2f0b85-93dc-49a9-9182-33c49610ba43" />
+
+
 ## License
 
 [MIT](LICENSE)
